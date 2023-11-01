@@ -9,16 +9,28 @@ config.sat_backend = "kissat"
 # Encoding that will store all of your constraints
 E = Encoding()
 
+SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
+NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
+
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
 @proposition(E)
-class BasicPropositions:
+class Card:
 
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, player, number, suit):
+        self.player = player
+        self.number = number
+        self.suit = suit
 
     def __repr__(self):
-        return f"A.{self.data}"
+        return f"{self.player}.{self.suit}.{self.number}"
 
+
+
+#User's cards
+u_cards = [Card('U', num, suit) for num in NUMBERS for suit in SUITS]
+
+#Dealer's cards
+d_cards = [Card('D', num, suit) for num in NUMBERS for suit in SUITS]
 
 # Different classes for propositions are useful because this allows for more dynamic constraint creation
 # for propositions within that class. For example, you can enforce that "at least one" of the propositions
@@ -36,6 +48,7 @@ class FancyPropositions:
         return f"A.{self.data}"
 
 # Call your variables whatever you want
+"""
 a = BasicPropositions("a")
 b = BasicPropositions("b")   
 c = BasicPropositions("c")
@@ -45,7 +58,7 @@ e = BasicPropositions("e")
 x = FancyPropositions("x")
 y = FancyPropositions("y")
 z = FancyPropositions("z")
-
+"""
 
 # Build an example full theory for your setting and return it.
 #
@@ -53,15 +66,35 @@ z = FancyPropositions("z")
 #  This restriction is fairly minimal, and if there is any concern, reach out to the teaching staff to clarify
 #  what the expectations are.
 def example_theory():
-    # Add custom constraints by creating formulas with the variables you created. 
-    E.add_constraint((a | b) & ~x)
-    # Implication
-    E.add_constraint(y >> z)
-    # Negate a formula
-    E.add_constraint(~(x & y))
-    # You can also add more customized "fancy" constraints. Use case: you don't want to enforce "exactly one"
-    # for every instance of BasicPropositions, but you want to enforce it for a, b, and c.:
-    constraint.add_exactly_one(E, a, b, c)
+    #Straight Flush for user
+    for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
+        for suit in SUITS:
+            E.add_constraint(
+                Card('U', i, suit) & Card('U', i+1, suit) & Card('U', i+2, suit)
+            )
+    # High card is Ace or King for user
+    for suit in SUITS:
+        E.add_constraint(Card('U', 14, suit) | Card('U', 13, suit))
+
+    # Hand is Queen-6-4 or better for user
+    q64_conditions = []
+    for suit1 in SUITS:
+        for suit2 in SUITS:
+            for suit3 in SUITS:
+                condition = (
+                Card('U', 12, suit1) &  # Queen
+                (Card('U', 6, suit2) | Card('U', 7, suit2) | Card('U', 8, suit2) |
+                    Card('U', 9, suit2) | Card('U', 10, suit2) | Card('U', 11, suit2) |
+                    Card('U', 12, suit2) | Card('U', 13, suit2) | Card('U', 14, suit2)) 
+                    &
+                (Card('U', 4, suit3) | Card('U', 5, suit3) | Card('U', 6, suit3) |
+                    Card('U', 7, suit3) | Card('U', 8, suit3) | Card('U', 9, suit3) |
+                    Card('U', 10, suit3) | Card('U', 11, suit3) | Card('U', 12, suit3) |
+                    Card('U', 13, suit3) | Card('U', 14, suit3))
+                )
+
+                q64_conditions.append(condition)
+    E.add_constraint(sum(q64_conditions))
 
     return E
 
