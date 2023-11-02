@@ -1,13 +1,13 @@
 import random
-#from bauhaus import Encoding, proposition, constraint
-#from bauhaus.utils import count_solutions, likelihood
+from bauhaus import Encoding, proposition, constraint
+from bauhaus.utils import count_solutions, likelihood
 
 # These two lines make sure a faster SAT solver is used.
-#from nnf import config
-#config.sat_backend = "kissat"
+from nnf import config
+config.sat_backend = "kissat"
 
 # Encoding that will store all of your constraints
-#E = Encoding()
+E = Encoding()
 
 SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
 NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
@@ -61,7 +61,7 @@ def dealCards():
 
 
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
-#@proposition(E)
+@proposition(E)
 class Card:
 
     def __init__(self, player, number, suit):
@@ -112,6 +112,8 @@ z = FancyPropositions("z")
 #  This restriction is fairly minimal, and if there is any concern, reach out to the teaching staff to clarify
 #  what the expectations are.
 def example_theory():
+##DETERMINE HAND RANKINGS
+
     #Straight Flush for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
         for suit in SUITS:
@@ -130,10 +132,43 @@ def example_theory():
                     )
         # Add a constraint that at least one of the straight conditions must be met
         # Bauhaus encoding means that sum checks through each proposition in the list
-        # So if one proposition in list is correct it returns as true.
+        # So if one proposition in list is correct it returns as true
         E.add_constraint(sum(straight_conditions))
 
-##DETERMINE HAND RANKINGS
+    #High card for user
+    high_card_constraints = []
+    #We iterate over the numbers starting from the highest (Ace)
+    #Then go down to the lowest to find the high card for the user and dealer.
+    for num in reversed(NUMBERS):
+        user_high_card_conditions = []
+        dealer_not_higher_card_conditions = []
+
+        for suit in SUITS:
+            # User high card condition for a specific suit
+            user_high_card_conditions.append(Card('U', num, suit))
+
+            # Dealer not having this card or any higher card for all suits
+            for any_suit in SUITS:
+                dealer_not_higher_card_conditions.append(~Card('D', num, any_suit))
+            for higher in NUMBERS:
+                if higher > num:  # Only consider cards that are of higher rank
+                    for any_suit in SUITS:
+                        dealer_not_higher_card_conditions.append(~Card('D', higher, any_suit))
+
+    # The user has a high card, and the dealer does not have this or any higher card
+    high_card_constraint = sum(user_high_card_conditions) & sum(dealer_not_higher_card_conditions)
+    high_card_constraints.append(high_card_constraint)
+    
+    # If no better hand we then compare high cards
+    # Need to add the constraints for pair then high card if pair is same, same for straight, flush and straight flush, and if they have same high card (different suit)
+    # Also need to account for ties depending on what cards they have
+    if_no_better_hand = (...)  # We need to add a condition that ensures no better hand is present for either user or the dealer
+    E.add_constraint(if_no_better_hand >> sum(high_card_constraints))
+
+
+    
+
+
  #Three of a kind
     for num in NUMBERS:
         E.add_constraint(                               #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
