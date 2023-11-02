@@ -1,0 +1,15 @@
+1)Are we coding our propositions and constraints in
+    the right way?
+
+
+2) What should the final product output? What should output look like in the end of runtime? 
+    Are we seeking a specific goal of what should be outputted. Overall, what is our goal! 
+
+
+3) Are we thinking too narowly, should we be taking into account cards of potential other players / dealer.
+    .right now we base our descion off 1 users hand. should we implement other users? Are we following the appropirate path? 
+
+
+    3i) are we able to meet virtually to dicuss in further detail? 
+
+
