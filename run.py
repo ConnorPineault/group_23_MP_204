@@ -130,7 +130,7 @@ def example_theory():
                     )
         # Add a constraint that at least one of the straight conditions must be met
         # Bauhaus encoding means that sum checks through each proposition in the list
-        # So if one proposition in list is correct it returns as true
+        # So if one proposition in list is correct it returns as true.
         E.add_constraint(sum(straight_conditions))
 
 ##DETERMINE HAND RANKINGS
