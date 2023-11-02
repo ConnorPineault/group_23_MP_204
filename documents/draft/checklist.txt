@@ -1,12 +1,12 @@
 CHECKLIST: 
 
-Finish propostions 
+Finish propostions DONE
 -
 -
-Adjust Constraints
+Adjust Constraints DONE 
 -
 -
-Finish Report
+Finish Report DONE
 -
 -
 
