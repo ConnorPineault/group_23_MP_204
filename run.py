@@ -1,19 +1,67 @@
-
-from bauhaus import Encoding, proposition, constraint
-from bauhaus.utils import count_solutions, likelihood
+import random
+#from bauhaus import Encoding, proposition, constraint
+#from bauhaus.utils import count_solutions, likelihood
 
 # These two lines make sure a faster SAT solver is used.
-from nnf import config
-config.sat_backend = "kissat"
+#from nnf import config
+#config.sat_backend = "kissat"
 
 # Encoding that will store all of your constraints
-E = Encoding()
+#E = Encoding()
 
 SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
 NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
 
+
+
+
+
+""" DEAL CARDS(): CREATES DECK | SHUFFLES | DEALS | AND PUTS CARDS BACK | """
+def dealCards():
+
+
+    deck = [Card(player,num,suit) for player in ['U', 'D']for num in NUMBERS for suit in SUITS]
+    
+    random.shuffle(deck)
+    u_hand = set()
+    d_hand = set()
+
+    while len(u_hand) < 3 and deck:
+        card = deck.pop()
+        if card.player == 'U' and card not in d_hand and card not in u_hand: 
+            u_hand.add(card)
+
+    while len(d_hand) < 3 and deck:
+        card = deck.pop()
+        if card.player == 'D' and card not in d_hand and card not in u_hand: 
+            d_hand.add(card)
+        
+
+    u_hand_sorted = sorted(u_hand, key=lambda card: (card.number, card.suit)) #SORTED!!
+    d_hand_sorted = sorted(d_hand, key=lambda card: (card.number, card.suit))
+
+
+    print("USER:")
+    for card in u_hand_sorted:
+        print(f"{card.number}, Of {card.suit}")
+    print("DEAL:")
+    for card in d_hand_sorted:
+        print(f"{card.number}, Of {card.suit}")
+
+    
+    """option to put cards back into deck when/if playing multiple rounds"""
+    #put cards back
+    # for card in u_hand:
+        # deck.append(card)
+    # for card in d_hand:
+        # deck.append(card)
+    
+
+
+
+
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
-@proposition(E)
+#@proposition(E)
 class Card:
 
     def __init__(self, player, number, suit):
@@ -22,23 +70,21 @@ class Card:
         self.suit = suit
 
     def __repr__(self):
-        return f"{self.player}.{self.suit}.{self.number}"
+        return f"{self.player}.{self.number}.{self.suit}" #in english 8 of hearts, not heart 8: changed for readability
+    
 
 
 
-#User's cards
-u_cards = [Card('U', num, suit) for num in NUMBERS for suit in SUITS]
 
-#Dealer's cards
-d_cards = [Card('D', num, suit) for num in NUMBERS for suit in SUITS]
+
 
 # Different classes for propositions are useful because this allows for more dynamic constraint creation
 # for propositions within that class. For example, you can enforce that "at least one" of the propositions
 # that are instances of this class must be true by using a @constraint decorator.
 # other options include: at most one, exactly one, at most k, and implies all.
 # For a complete module reference, see https://bauhaus.readthedocs.io/en/latest/bauhaus.html
-@constraint.at_least_one(E)
-@proposition(E)
+#@constraint.at_least_one(E)
+#@proposition(E)
 class FancyPropositions:
 
     def __init__(self, data):
@@ -170,18 +216,30 @@ def example_theory():
 
 if __name__ == "__main__":
 
-    T = example_theory()
+    dealCards()
+
+    
+
+
+        
+    
+
+    
+
+
+
+   # T = example_theory()
     # Don't compile until you're finished adding all your constraints!
-    T = T.compile()
+   # T = T.compile()
     # After compilation (and only after), you can check some of the properties
     # of your model:
-    print("\nSatisfiable: %s" % T.satisfiable())
-    print("# Solutions: %d" % count_solutions(T))
-    print("   Solution: %s" % T.solve())
+   # print("\nSatisfiable: %s" % T.satisfiable())
+   # print("# Solutions: %d" % count_solutions(T))
+   # print("   Solution: %s" % T.solve())
 
-    print("\nVariable likelihoods:")
-    for v,vn in zip([a,b,c,x,y,z], 'abcxyz'):
+ #   print("\nVariable likelihoods:")
+  #  for v,vn in zip([a,b,c,x,y,z], 'abcxyz'):
         # Ensure that you only send these functions NNF formulas
         # Literals are compiled to NNF here
-        print(" %s: %.2f" % (vn, likelihood(T, v)))
-    print()
+  #      print(" %s: %.2f" % (vn, likelihood(T, v)))
+ #   print()
