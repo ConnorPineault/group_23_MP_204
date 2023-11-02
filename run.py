@@ -73,7 +73,19 @@ def example_theory():
                 Card('U', i, suit) & Card('U', i+1, suit) & Card('U', i+2, suit)
             )
 
-
+    #Straight for user
+    for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
+        straight_conditions = []
+        for suit1 in SUITS:
+            for suit2 in SUITS:
+                for suit3 in SUITS:
+                    straight_conditions.append(
+                        Card('U', i, suit1) & Card('U', i+1, suit2) & Card('U', i+2, suit3)
+                    )
+        # Add a constraint that at least one of the straight conditions must be met
+        # Bauhaus encoding means that sum checks through each proposition in the list
+        # So if one proposition in list is correct it returns as true
+        E.add_constraint(sum(straight_conditions))
 
 ##DETERMINE HAND RANKINGS
  #Three of a kind
