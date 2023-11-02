@@ -11,9 +11,10 @@ Jape File:
 documents/draft/proofs.jp
 
 Jape proof and sequents Description: 
-documents/draft/readme2.md
+documents/draft/JapeExplanation.md
 
-
+Powerpoint:
+modelling_report.pptx
 
 
 
