@@ -72,9 +72,66 @@ def example_theory():
             E.add_constraint(
                 Card('U', i, suit) & Card('U', i+1, suit) & Card('U', i+2, suit)
             )
+
+
+
+##DETERMINE HAND RANKINGS
+ #Three of a kind
+    for num in NUMBERS:
+        E.add_constraint(                               #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
+            Card('U', 14, suit) & Card('U', 14, suit) & Card('U', 14, suit) |
+            Card('U', 13, suit) & Card('U', 13, suit) & Card('U', 13, suit) |
+            Card('U', 12, suit) & Card('U', 12, suit) & Card('U', 12, suit) |
+            Card('U', 11, suit) & Card('U', 11, suit) & Card('U', 11, suit) |
+            Card('U', 10, suit) & Card('U', 10, suit) & Card('U', 10, suit) |
+            Card('U', 9, suit) & Card('U', 9, suit) & Card('U', 9, suit) |
+            Card('U', 8, suit) & Card('U', 8, suit) & Card('U', 8, suit) |
+            Card('U', 7, suit) & Card('U', 7, suit) & Card('U', 7, suit) |
+            Card('U', 6, suit) & Card('U', 6, suit) & Card('U', 6, suit) |
+            Card('U', 5, suit) & Card('U', 5, suit) & Card('U', 5, suit) |
+            Card('U', 4, suit) & Card('U', 4, suit) & Card('U', 4, suit) |
+            Card('U', 3, suit) & Card('U', 3, suit) & Card('U', 3, suit) |
+            Card('U', 2, suit) & Card('U', 2, suit) & Card('U', 2, suit)
+        )
+
+    #Flush
+    for suit in SUITS:
+        E.add_constraint(                               #ADD ~SF AND ~T ONCE HAND RANKINGS HAVE PROPOSITION
+            Card('U', num, S) & Card('U', num, S) & Card('U', num, S) |         #Three spades
+            Card('U', num, C) & Card('U', num, C) & Card('U', num, C) |         #Three clubs
+            Card('U', num, D) & Card('U', num, D) & Card('U', num, D) |         #Three diamonds
+            Card('U', num, H) & Card('U', num, H) & Card('U', num, H)           #Three hearts
+        )
+
+    
+
+    #Pair       
+    for num in NUMBERS:                 #ORDER THE CARDS, SO MIDDLE IS ALWAYS PAIR, CHECK NOT ANY HIGEHR RANKINGS
+        E.add_constraint(
+            Card('U', num, suit) & Card('U', num, suit) & ~Card('U', num, suit) |    #NOT SURE WHERE TO PUT NEGATION
+            ~Card('U', num, suit) & Card('U', num, suit) & Card('U', num, suit)
+        )
+
+
+
+    ##PLAY OR FOLD RECOMMENDATIONS
+
     # High card is Ace or King for user
     for suit in SUITS:
         E.add_constraint(Card('U', 14, suit) | Card('U', 13, suit))
+
+    #Hand is Queen-7 or better for user
+    for suit in SUITS:
+        for suit2 in SUITS:
+            #condition = (
+            E.add_constraint((Card('U', 14, suit) | Card('U', 13, suit) | Card('U', 12, suit))
+                &
+                (Card('U', 14, suit) | Card('U', 13, suit) | Card('U', 12, suit) |
+                Card('U', 11, suit) | Card('U', 10, suit) | Card('U', 9, suit) |
+                Card('U', 8, suit) | Card('U', 7, suit)) 
+            )
+  #          q64_conditions.append(condition)
+   # E.add_constraint(sum(q64_conditions))
 
     # Hand is Queen-6-4 or better for user
     q64_conditions = []
