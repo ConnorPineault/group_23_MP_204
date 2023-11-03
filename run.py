@@ -17,28 +17,37 @@ NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ac
 
 
 """ DEAL CARDS(): CREATES DECK | SHUFFLES | DEALS | AND PUTS CARDS BACK | """
+
+"""ABILITY TO INITIATE A SECOND PLAYER IF NEEDED"""
 def dealCards():
 
 
-    deck = [Card(player,num,suit) for player in ['U', 'D']for num in NUMBERS for suit in SUITS]
+    deck = [Card(player,num,suit) for player in ['U', 'D','CPU']for num in NUMBERS for suit in SUITS]
     
     random.shuffle(deck)
     u_hand = set()
     d_hand = set()
+    cpu_hand = set()
 
     while len(u_hand) < 3 and deck:
         card = deck.pop()
-        if card.player == 'U' and card not in d_hand and card not in u_hand: 
+        if card.player == 'U' and card not in d_hand and card not in u_hand and card not in cpu_hand: 
             u_hand.add(card)
 
     while len(d_hand) < 3 and deck:
         card = deck.pop()
-        if card.player == 'D' and card not in d_hand and card not in u_hand: 
+        if card.player == 'D' and card not in d_hand and card not in u_hand and card not in cpu_hand: 
             d_hand.add(card)
+
+   # while len(cpu_hand) < 3 and deck:
+        # card = deck.pop()
+        # if card.player == 'CPU' and card not in d_hand and card not in u_hand and card not in cpu_hand: 
+            # cpu_hand.add(card)
         
 
     u_hand_sorted = sorted(u_hand, key=lambda card: (card.number, card.suit)) #SORTED!!
     d_hand_sorted = sorted(d_hand, key=lambda card: (card.number, card.suit))
+    # cpu_hand_sorted = sorted(cpu_hand, key=lambda card: (card.number, card.suit))
 
 
     print("USER:")
@@ -47,6 +56,9 @@ def dealCards():
     print("DEAL:")
     for card in d_hand_sorted:
         print(f"{card.number}, Of {card.suit}")
+    # print("CPU:")
+    # for card in cpu_hand_sorted:
+        # print(f"{card.number}, Of {card.suit}")
 
     
     """option to put cards back into deck when/if playing multiple rounds"""
@@ -54,6 +66,8 @@ def dealCards():
     # for card in u_hand:
         # deck.append(card)
     # for card in d_hand:
+        # deck.append(card)
+    # for card in cpu_hand:
         # deck.append(card)
     
 
