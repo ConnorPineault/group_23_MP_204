@@ -27,7 +27,7 @@ def dealCards():
     random.shuffle(deck)
     u_hand = set()
     d_hand = set()
-    cpu_hand = set()
+    # cpu_hand = set()
 
     while len(u_hand) < 3 and deck:
         card = deck.pop()
