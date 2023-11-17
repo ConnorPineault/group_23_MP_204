@@ -78,8 +78,7 @@ def dealCards():
 @proposition(E)
 class Card:
 
-    def __init__(self, player, number, suit):
-        self.player = player
+    def __init__(self, number, suit):
         self.number = number
         self.suit = suit
 
@@ -132,7 +131,7 @@ def example_theory():
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
         for suit in SUITS:
             E.add_constraint(
-                Card('U', i, suit) & Card('U', i+1, suit) & Card('U', i+2, suit)
+                Card( i, suit) & Card(i+1, suit) & Card(i+2, suit)
             )
 
     #Straight for user
@@ -142,7 +141,7 @@ def example_theory():
             for suit2 in SUITS:
                 for suit3 in SUITS:
                     straight_conditions.append(
-                        Card('U', i, suit1) & Card('U', i+1, suit2) & Card('U', i+2, suit3)
+                        Card(i, suit1) & Card(i+1, suit2) & Card(i+2, suit3)
                     )
         # Add a constraint that at least one of the straight conditions must be met
         # Bauhaus encoding means that sum checks through each proposition in the list
@@ -159,15 +158,15 @@ def example_theory():
 
         for suit in SUITS:
             # User high card condition for a specific suit
-            user_high_card_conditions.append(Card('U', num, suit))
+            user_high_card_conditions.append(Card(num, suit))
 
             # Dealer not having this card or any higher card for all suits
             for any_suit in SUITS:
-                dealer_not_higher_card_conditions.append(~Card('D', num, any_suit))
+                dealer_not_higher_card_conditions.append(~Card(num, any_suit))
             for higher in NUMBERS:
                 if higher > num:  # Only consider cards that are of higher rank
                     for any_suit in SUITS:
-                        dealer_not_higher_card_conditions.append(~Card('D', higher, any_suit))
+                        dealer_not_higher_card_conditions.append(~Card(higher, any_suit))
 
     # The user has a high card, and the dealer does not have this or any higher card
     high_card_constraint = sum(user_high_card_conditions) & sum(dealer_not_higher_card_conditions)
@@ -186,28 +185,28 @@ def example_theory():
  #Three of a kind
     for num in NUMBERS:
         E.add_constraint(                               #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
-            Card('U', 14, suit) & Card('U', 14, suit) & Card('U', 14, suit) |
-            Card('U', 13, suit) & Card('U', 13, suit) & Card('U', 13, suit) |
-            Card('U', 12, suit) & Card('U', 12, suit) & Card('U', 12, suit) |
-            Card('U', 11, suit) & Card('U', 11, suit) & Card('U', 11, suit) |
-            Card('U', 10, suit) & Card('U', 10, suit) & Card('U', 10, suit) |
-            Card('U', 9, suit) & Card('U', 9, suit) & Card('U', 9, suit) |
-            Card('U', 8, suit) & Card('U', 8, suit) & Card('U', 8, suit) |
-            Card('U', 7, suit) & Card('U', 7, suit) & Card('U', 7, suit) |
-            Card('U', 6, suit) & Card('U', 6, suit) & Card('U', 6, suit) |
-            Card('U', 5, suit) & Card('U', 5, suit) & Card('U', 5, suit) |
-            Card('U', 4, suit) & Card('U', 4, suit) & Card('U', 4, suit) |
-            Card('U', 3, suit) & Card('U', 3, suit) & Card('U', 3, suit) |
-            Card('U', 2, suit) & Card('U', 2, suit) & Card('U', 2, suit)
+            Card(14, suit) & Card(14, suit) & Card(14, suit) |
+            Card(13, suit) & Card(13, suit) & Card(13, suit) |
+            Card(12, suit) & Card(12, suit) & Card(12, suit) |
+            Card(11, suit) & Card(11, suit) & Card(11, suit) |
+            Card(10, suit) & Card(10, suit) & Card(10, suit) |
+            Card(9, suit) & Card(9, suit) & Card(9, suit) |
+            Card(8, suit) & Card(8, suit) & Card(8, suit) |
+            Card(7, suit) & Card(7, suit) & Card(7, suit) |
+            Card(6, suit) & Card(6, suit) & Card(6, suit) |
+            Card(5, suit) & Card(5, suit) & Card(5, suit) |
+            Card(4, suit) & Card(4, suit) & Card(4, suit) |
+            Card(3, suit) & Card(3, suit) & Card(3, suit) |
+            Card(2, suit) & Card(2, suit) & Card(2, suit)
         )
 
     #Flush
     for suit in SUITS:
         E.add_constraint(                               #ADD ~SF AND ~T ONCE HAND RANKINGS HAVE PROPOSITION
-            Card('U', num, S) & Card('U', num, S) & Card('U', num, S) |         #Three spades
-            Card('U', num, C) & Card('U', num, C) & Card('U', num, C) |         #Three clubs
-            Card('U', num, D) & Card('U', num, D) & Card('U', num, D) |         #Three diamonds
-            Card('U', num, H) & Card('U', num, H) & Card('U', num, H)           #Three hearts
+            Card(num, 'S') & Card(num, 'S') & Card(num, 'S') |         #Three spades
+            Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
+            Card(num, 'D') & Card(num, 'D') & Card(num, 'D') |         #Three diamonds
+            Card(num, 'H') & Card(num, 'H') & Card(num, 'H')           #Three hearts
         )
 
     
@@ -215,8 +214,8 @@ def example_theory():
     #Pair       
     for num in NUMBERS:                 #ORDER THE CARDS, SO MIDDLE IS ALWAYS PAIR, CHECK NOT ANY HIGEHR RANKINGS
         E.add_constraint(
-            Card('U', num, suit) & Card('U', num, suit) & ~Card('U', num, suit) |    #NOT SURE WHERE TO PUT NEGATION
-            ~Card('U', num, suit) & Card('U', num, suit) & Card('U', num, suit)
+            Card(num, suit) & Card(num, suit) & ~Card(num, suit) |    #NOT SURE WHERE TO PUT NEGATION
+            ~Card(num, suit) & Card(num, suit) & Card(num, suit)
         )
 
 
@@ -225,17 +224,17 @@ def example_theory():
 
     # High card is Ace or King for user
     for suit in SUITS:
-        E.add_constraint(Card('U', 14, suit) | Card('U', 13, suit))
+        E.add_constraint(Card(14, suit) | Card(13, suit))
 
     #Hand is Queen-7 or better for user
     for suit in SUITS:
         for suit2 in SUITS:
             #condition = (
-            E.add_constraint((Card('U', 14, suit) | Card('U', 13, suit) | Card('U', 12, suit))
+            E.add_constraint((Card(14, suit) | Card(13, suit) | Card(12, suit))
                 &
-                (Card('U', 14, suit) | Card('U', 13, suit) | Card('U', 12, suit) |
-                Card('U', 11, suit) | Card('U', 10, suit) | Card('U', 9, suit) |
-                Card('U', 8, suit) | Card('U', 7, suit)) 
+                (Card(14, suit) | Card(13, suit) | Card(12, suit) |
+                Card(11, suit) | Card(10, suit) | Card(9, suit) |
+                Card(8, suit) | Card(7, suit)) 
             )
   #          q64_conditions.append(condition)
    # E.add_constraint(sum(q64_conditions))
@@ -246,15 +245,15 @@ def example_theory():
         for suit2 in SUITS:
             for suit3 in SUITS:
                 condition = (
-                Card('U', 12, suit1) &  # Queen
-                (Card('U', 6, suit2) | Card('U', 7, suit2) | Card('U', 8, suit2) |
-                    Card('U', 9, suit2) | Card('U', 10, suit2) | Card('U', 11, suit2) |
-                    Card('U', 12, suit2) | Card('U', 13, suit2) | Card('U', 14, suit2)) 
+                Card(12, suit1) &  # Queen
+                (Card(6, suit2) | Card(7, suit2) | Card(8, suit2) |
+                    Card(9, suit2) | Card(10, suit2) | Card(11, suit2) |
+                    Card(12, suit2) | Card(13, suit2) | Card(14, suit2)) 
                     &
-                (Card('U', 4, suit3) | Card('U', 5, suit3) | Card('U', 6, suit3) |
-                    Card('U', 7, suit3) | Card('U', 8, suit3) | Card('U', 9, suit3) |
-                    Card('U', 10, suit3) | Card('U', 11, suit3) | Card('U', 12, suit3) |
-                    Card('U', 13, suit3) | Card('U', 14, suit3))
+                (Card(4, suit3) | Card(5, suit3) | Card(6, suit3) |
+                    Card(7, suit3) | Card(8, suit3) | Card(9, suit3) |
+                    Card(10, suit3) | Card(11, suit3) | Card(12, suit3) |
+                    Card(13, suit3) | Card(14, suit3))
                 )
 
                 q64_conditions.append(condition)
