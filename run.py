@@ -31,22 +31,21 @@ def dealCards(deck):
 
     while len(u_hand) < 3 and deck:
         card = deck.pop()
-        if card not in d_hand and card and card not in cpu_hand: 
-            u_hand.add(card)
+        u_hand.add(card)
 
-    while len(d_hand) < 3 and deck:
-        card = deck.pop()
-        if card not in u_hand and card not in cpu_hand: 
-            d_hand.add(card)
+    #while len(d_hand) < 3 and deck:
+        #card = deck.pop()
+        #if card not in u_hand and card not in cpu_hand: 
+            #d_hand.add(card)
 
-    while len(cpu_hand) < 3 and deck:
-        card = deck.pop()
-        if card not in d_hand and card not in u_hand : 
-            cpu_hand.add(card)
+    #while len(cpu_hand) < 3 and deck:
+        #card = deck.pop()
+        #if card not in d_hand and card not in u_hand : 
+            #cpu_hand.add(card)
         
 
     u_hand_sorted = sorted(u_hand, key=lambda card: (card.number, card.suit)) #SORTED!!
-    d_hand_sorted = sorted(d_hand, key=lambda card: (card.number, card.suit))
+    #d_hand_sorted = sorted(d_hand, key=lambda card: (card.number, card.suit))
     # cpu_hand_sorted = sorted(cpu_hand, key=lambda card: (card.number, card.suit))
 
 
@@ -70,7 +69,7 @@ def dealCards(deck):
     # for card in cpu_hand:
         # deck.append(card)
     
-    hand_lst = [u_hand_sorted, d_hand_sorted]
+    hand_lst = [u_hand_sorted]
 
     return hand_lst
 
@@ -89,7 +88,7 @@ class Card:
     
 
 class Hand:
-    def __init_(self, cards):
+    def __init__(self, cards):
         self.cards = cards
         self.ranking = self.handRanking()
         
@@ -129,13 +128,14 @@ z = FancyPropositions("z")
 
 """
 
+"""
 SF = BasicPropositions("SF")
 FL = BasicPropositions("F")
 S =  BasicPropositions("S")
 TK = BasicPropositions("TK")
 P =  BasicPropositions("P")
 HC = BasicPropositions("HC")
-
+"""
 # Build an example full theory for your setting and return it.
 #
 #  There should be at least 10 variables, and a sufficiently large formula to describe it (>50 operators).
@@ -152,7 +152,7 @@ def handRanking(hand):          ##DETERMINE HAND RANKINGS
         for suit in SUITS:
             E.add_constraint(
                 Card( i, suit) & Card(i+1, suit) & Card(i+2, suit)
-            ) >> Hand.is_SF
+            )
 
     #Straight for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
@@ -162,7 +162,7 @@ def handRanking(hand):          ##DETERMINE HAND RANKINGS
                 for suit3 in SUITS:
                     straight_conditions.append(
                         Card(i, suit1) & Card(i+1, suit2) & Card(i+2, suit3)
-                    ) >> Hand.is_ST
+                    ) 
         E.add_constraint(sum(straight_conditions))
 
 
@@ -389,14 +389,13 @@ def main():
     deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
 
     cards1 = dealCards(deck)
-    cards2 = dealCards(deck)
-    handRanking(cards1)
-    print(handRanking)
+    hand1 = Hand(cards1)
+
+  
+    for card in hand1.cards:
+        print(f"{card.number}, Of {card.suit}")
+
    
-
-    
-
-
 
 
 
