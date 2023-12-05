@@ -1,13 +1,13 @@
 import random
-from bauhaus import Encoding, proposition, constraint
-from bauhaus.utils import count_solutions, likelihood
+###from bauhaus import Encoding, proposition, constraint
+###from bauhaus.utils import count_solutions, likelihood
 
 # These two lines make sure a faster SAT solver is used.
-from nnf import config
-config.sat_backend = "kissat"
+###from nnf import config
+###config.sat_backend = "kissat"
 
 # Encoding that will store all of your constraints
-E = Encoding()
+###E = Encoding()
 
 SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
 NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
@@ -22,27 +22,27 @@ NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ac
 def dealCards():
 
 
-    deck = [Card(player,num,suit) for player in ['U', 'D','CPU']for num in NUMBERS for suit in SUITS]
+    deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
     
     random.shuffle(deck)
     u_hand = set()
     d_hand = set()
-    # cpu_hand = set()
+    cpu_hand = set()
 
     while len(u_hand) < 3 and deck:
         card = deck.pop()
-        if card.player == 'U' and card not in d_hand and card not in u_hand and card not in cpu_hand: 
+        if card not in d_hand and card and card not in cpu_hand: 
             u_hand.add(card)
 
     while len(d_hand) < 3 and deck:
         card = deck.pop()
-        if card.player == 'D' and card not in d_hand and card not in u_hand and card not in cpu_hand: 
+        if card not in u_hand and card not in cpu_hand: 
             d_hand.add(card)
 
-   # while len(cpu_hand) < 3 and deck:
-        # card = deck.pop()
-        # if card.player == 'CPU' and card not in d_hand and card not in u_hand and card not in cpu_hand: 
-            # cpu_hand.add(card)
+    while len(cpu_hand) < 3 and deck:
+        card = deck.pop()
+        if card not in d_hand and card not in u_hand : 
+            cpu_hand.add(card)
         
 
     u_hand_sorted = sorted(u_hand, key=lambda card: (card.number, card.suit)) #SORTED!!
@@ -53,7 +53,7 @@ def dealCards():
     print("USER:")
     for card in u_hand_sorted:
         print(f"{card.number}, Of {card.suit}")
-    print("DEAL:")
+    print("DEALER:")
     for card in d_hand_sorted:
         print(f"{card.number}, Of {card.suit}")
     # print("CPU:")
@@ -75,7 +75,7 @@ def dealCards():
 
 
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
-@proposition(E)
+#@proposition(E)
 class Card:
 
     def __init__(self, number, suit):
@@ -83,7 +83,7 @@ class Card:
         self.suit = suit
 
     def __repr__(self):
-        return f"{self.player}.{self.number}.{self.suit}" #in english 8 of hearts, not heart 8: changed for readability
+        return f"{self.player}.{self.number}.{self.suit}" 
     
 
 
@@ -265,7 +265,7 @@ def example_theory():
 if __name__ == "__main__":
 
     dealCards()
-    print("hello")
+
 
     
 
