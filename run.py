@@ -1,6 +1,6 @@
 
 
-
+"""UP TO DATE"""
 import random
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
@@ -268,7 +268,7 @@ def handRanking(cards):
     
 
     #Pair
-    E.add_constraint = [
+    P = [
         ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
         for num in NUMBERS
     ]
