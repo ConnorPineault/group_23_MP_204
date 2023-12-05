@@ -93,7 +93,11 @@ class Card:
 class Hand:
     def __init__(self, cards):
         self.cards = cards
-        self.P = handRanking()
+        self.SF = False
+        self.F = False
+        self.S = False
+       # self.P = handRanking()
+        self.P = False
         
 
 
@@ -267,8 +271,8 @@ def handRanking(cards):
 
     
 
-    #Pair
-    P = [
+    #Pair           #Not sure if cards P works
+    cards.P = [
         ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
         for num in NUMBERS
     ]
