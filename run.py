@@ -1,6 +1,6 @@
 
 
-"""UP TO DATE"""
+
 import random
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
@@ -29,8 +29,8 @@ def dealCards(deck):
     
     random.shuffle(deck)
     u_hand = set()
-    d_hand = set()
-    cpu_hand = set()
+    #d_hand = set()
+    #cpu_hand = set()
 
     while len(u_hand) < 3 and deck:
         card = deck.pop()
@@ -72,9 +72,9 @@ def dealCards(deck):
     # for card in cpu_hand:
         # deck.append(card)
     
-    hand_lst = [u_hand_sorted]
+    
 
-    return hand_lst
+    return u_hand_sorted
 
 
 
@@ -93,7 +93,7 @@ class Card:
 class Hand:
     def __init__(self, cards):
         self.cards = cards
-        self.ranking = self.handRanking()
+        self.P = handRanking()
         
 
 
@@ -148,30 +148,39 @@ def example_theory():
 
     pass
 
-def handRanking(hand):          ##DETERMINE HAND RANKINGS
+def handRanking(cards): 
+    #print(cards[0].number)
+    #print(cards[0].suit)
+ 
+
+
+
+
+
+            ##DETERMINE HAND RANKINGS
 
     #Straight Flush for user
-    for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
-        for suit in SUITS:
+  #  for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
+ #       for suit in SUITS:
 
 
 
-            E.add_constraint
+ #           E.add_constraint
             
-            (Card( i, suit) & Card(i+1, suit) & Card(i+2, suit))
+ #           (Card( i, suit) & Card(i+1, suit) & Card(i+2, suit))
            
             
 
     #Straight for user
-    for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
-        straight_conditions = []
-        for suit1 in SUITS:
-            for suit2 in SUITS:
-                for suit3 in SUITS:
-                    straight_conditions.append(
-                        Card(i, suit1) & Card(i+1, suit2) & Card(i+2, suit3)
-                    ) 
-        E.add_constraint(sum(straight_conditions))
+   # for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
+   #     straight_conditions = []
+   #     for suit1 in SUITS:
+   #         for suit2 in SUITS:
+   #             for suit3 in SUITS:
+   #                 straight_conditions.append(
+   #                     Card(i, suit1) & Card(i+1, suit2) & Card(i+2, suit3)
+   #                 ) 
+   #     E.add_constraint(sum(straight_conditions))
 
 
 
@@ -187,7 +196,7 @@ def handRanking(hand):          ##DETERMINE HAND RANKINGS
 
 
 
-
+    """
     #High card for user
     high_card_constraints = []
     #We iterate over the numbers starting from the highest (Ace)
@@ -218,114 +227,60 @@ def handRanking(hand):          ##DETERMINE HAND RANKINGS
     if_no_better_hand = (...)  # We need to add a condition that ensures no better hand is present for either user or the dealer
     E.add_constraint(if_no_better_hand >> sum(high_card_constraints))
 
-
+    """
     
 
 
     #Three of a kind
-    for num in NUMBERS:
+    
 
 
-        E.add_constraint(                               #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
-            Card(14, suit) & Card(14, suit) & Card(14, suit) |
-            Card(13, suit) & Card(13, suit) & Card(13, suit) |
-            Card(12, suit) & Card(12, suit) & Card(12, suit) |
-            Card(11, suit) & Card(11, suit) & Card(11, suit) |
-            Card(10, suit) & Card(10, suit) & Card(10, suit) |
-            Card(9, suit) & Card(9, suit) & Card(9, suit) |
-            Card(8, suit) & Card(8, suit) & Card(8, suit) |
-            Card(7, suit) & Card(7, suit) & Card(7, suit) |
-            Card(6, suit) & Card(6, suit) & Card(6, suit) |
-            Card(5, suit) & Card(5, suit) & Card(5, suit) |
-            Card(4, suit) & Card(4, suit) & Card(4, suit) |
-            Card(3, suit) & Card(3, suit) & Card(3, suit) |
-            Card(2, suit) & Card(2, suit) & Card(2, suit)
-        ) >> Hand.is_THREE_K
+    #Hand.TK    (                                                       #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
+    #            Card(14, suit) & Card(14, suit) & Card(14, suit) |
+    #            Card(13, suit) & Card(13, suit) & Card(13, suit) |
+    #            Card(12, suit) & Card(12, suit) & Card(12, suit) |
+    #            Card(11, suit) & Card(11, suit) & Card(11, suit) |
+    #            Card(10, suit) & Card(10, suit) & Card(10, suit) |
+    #            Card(9, suit) & Card(9, suit) & Card(9, suit) |
+    #            Card(8, suit) & Card(8, suit) & Card(8, suit) |
+    #            Card(7, suit) & Card(7, suit) & Card(7, suit) |
+    #            Card(6, suit) & Card(6, suit) & Card(6, suit) |
+    #            Card(5, suit) & Card(5, suit) & Card(5, suit) |
+    #            Card(4, suit) & Card(4, suit) & Card(4, suit) |
+    #            Card(3, suit) & Card(3, suit) & Card(3, suit) |
+    #            Card(2, suit) & Card(2, suit) & Card(2, suit)
+    #        )
 
     #Flush
-    for suit in SUITS:
-        E.add_constraint(                               #ADD ~SF AND ~T ONCE HAND RANKINGS HAVE PROPOSITION
-            Card(num, 'S') & Card(num, 'S') & Card(num, 'S') |         #Three spades
-            Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
-            Card(num, 'D') & Card(num, 'D') & Card(num, 'D') |         #Three diamonds
-            Card(num, 'H') & Card(num, 'H') & Card(num, 'H')           #Three hearts
-        ) >> Hand.is_F
+    #for suit in SUITS:
+    #    E.add_constraint(                               #ADD ~SF AND ~T ONCE HAND RANKINGS HAVE PROPOSITION
+    #        Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
+    #        Card(num, 'D') & Card(num, 'D') & Card(num, 'D') |         #Three diamonds
+    #        Card(num, 'H') & Card(num, 'H') & Card(num, 'H')           #Three hearts
+   #    ) >> Hand.is_F
+
+
+    #Hand.FL =     (Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
+    #                Card(num, 'D') & Card(num, 'D') & Card(num, 'D') |         #Three diamonds
+    #               Card(num, 'H') & Card(num, 'H') & Card(num, 'H'))          #Three hearts
+    
 
     
 
-    #Pair       
-    for num in NUMBERS:                 #ORDER THE CARDS, SO MIDDLE IS ALWAYS PAIR, CHECK NOT ANY HIGEHR RANKINGS
-        E.add_constraint(
-            Card(num, suit) & Card(num, suit) & ~Card(num, suit) |    #NOT SURE WHERE TO PUT NEGATION
-            ~Card(num, suit) & Card(num, suit) & Card(num, suit)
-        ) >> Hand.is_PAIR
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def playOrFold():
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ##PLAY OR FOLD RECOMMENDATIONS
+    #Pair
+    E.add_constraint = [
+        ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
+        for num in NUMBERS
+    ]
+    if any(P):
+        print('pair')
+    
+        return True
+
+    
+
+
+def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 
     # High card is Ace or King for user
     for suit in SUITS:
@@ -365,52 +320,18 @@ def playOrFold():
     E.add_constraint(sum(q64_conditions))
 
     return E
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def determineWinner(hand1, hand2):
     
     pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def main():
     deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
 
-    cards1 = dealCards(deck)
-    hand1 = Hand(cards1)
 
-  
-    for card in hand1.cards:
-        print(f"{card.number}, Of {card.suit}")
+    cards1 = dealCards(deck)
+    print(cards1)
+    handRanking(cards1)
+    
+
 
    
 
