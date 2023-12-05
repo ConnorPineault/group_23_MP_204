@@ -1,3 +1,6 @@
+
+
+"""UP TO DATE"""
 import random
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
@@ -150,9 +153,14 @@ def handRanking(hand):          ##DETERMINE HAND RANKINGS
     #Straight Flush for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
         for suit in SUITS:
-            E.add_constraint(
-                Card( i, suit) & Card(i+1, suit) & Card(i+2, suit)
-            )
+
+
+
+            E.add_constraint
+            
+            (Card( i, suit) & Card(i+1, suit) & Card(i+2, suit))
+           
+            
 
     #Straight for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
@@ -170,6 +178,15 @@ def handRanking(hand):          ##DETERMINE HAND RANKINGS
         # Add a constraint that at least one of the straight conditions must be met
         # Bauhaus encoding means that sum checks through each proposition in the list
         # So if one proposition in list is correct it returns as true
+
+
+
+
+
+
+
+
+
 
     #High card for user
     high_card_constraints = []
