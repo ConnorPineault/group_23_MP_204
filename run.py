@@ -19,10 +19,10 @@ NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ac
 """ DEAL CARDS(): CREATES DECK | SHUFFLES | DEALS | AND PUTS CARDS BACK | """
 
 
-def dealCards():
+def dealCards(deck):
 
 
-    deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
+    #deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
     
     random.shuffle(deck)
     u_hand = set()
@@ -84,8 +84,8 @@ class Card:
         self.number = number
         self.suit = suit
 
-    #def __repr__(self):
-        #return f"{self.player}.{self.number}.{self.suit}" 
+    def __repr__(self):
+        return f"{self.number}.{self.suit}" 
     
 
 
@@ -276,19 +276,12 @@ def determineWinner():
     pass
 
 def main():
+    deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
 
+    cards1 = dealCards(deck)
+    cards2 = dealCards(deck)
+    
 
-    cards1 = dealCards()
-    cards2 = dealCards()
-
-
-    print("USER:")
-    for card in cards1[0]:
-        print(f"{card.number}, Of {card.suit}")
-
-    print("DEALER:")
-    for card in cards2[0]:
-        print(f"{card.number}, Of {card.suit}")
 
 
 
