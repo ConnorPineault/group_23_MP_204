@@ -128,11 +128,13 @@ z = FancyPropositions("z")
 
 
 """
+
 SF = BasicPropositions("SF")
 FL = BasicPropositions("F")
-S = BasicPropositions("S")
+S =  BasicPropositions("S")
 TK = BasicPropositions("TK")
-TK = BasicPropositions("TK")
+P =  BasicPropositions("P")
+HC = BasicPropositions("HC")
 
 # Build an example full theory for your setting and return it.
 #
