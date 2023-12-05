@@ -1,5 +1,5 @@
 import random
-###from bauhaus import Encoding, proposition, constraint
+from bauhaus import Encoding, proposition, constraint
 ###from bauhaus.utils import count_solutions, likelihood
 
 # These two lines make sure a faster SAT solver is used.
@@ -7,7 +7,7 @@ import random
 ###config.sat_backend = "kissat"
 
 # Encoding that will store all of your constraints
-###E = Encoding()
+E = Encoding()
 
 SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
 NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
@@ -88,7 +88,11 @@ class Card:
         return f"{self.number}.{self.suit}" 
     
 
-
+class Hand:
+    def __init_(self, cards):
+        self.cards = cards
+        self.ranking = self.handRanking()
+        
 
 
 
@@ -128,16 +132,16 @@ z = FancyPropositions("z")
 #  what the expectations are.
 def example_theory():
 
+    pass
 
-
-#def handRanking():          ##DETERMINE HAND RANKINGS
+def handRanking():          ##DETERMINE HAND RANKINGS
 
     #Straight Flush for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
         for suit in SUITS:
             E.add_constraint(
                 Card( i, suit) & Card(i+1, suit) & Card(i+2, suit)
-            )
+            ) >> Hand.is_SF
 
     #Straight for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
@@ -147,11 +151,14 @@ def example_theory():
                 for suit3 in SUITS:
                     straight_conditions.append(
                         Card(i, suit1) & Card(i+1, suit2) & Card(i+2, suit3)
-                    )
+                    ) >> Hand.is_ST
+        E.add_constraint(sum(straight_conditions))
+
+
+
         # Add a constraint that at least one of the straight conditions must be met
         # Bauhaus encoding means that sum checks through each proposition in the list
         # So if one proposition in list is correct it returns as true
-        E.add_constraint(sum(straight_conditions))
 
     #High card for user
     high_card_constraints = []
@@ -171,7 +178,7 @@ def example_theory():
             for higher in NUMBERS:
                 if higher > num:  # Only consider cards that are of higher rank
                     for any_suit in SUITS:
-                        dealer_not_higher_card_conditions.append(~Card(higher, any_suit))
+                        dealer_not_higher_card_conditions.append(~Card(higher, any_suit)) >> Hand.is_HC
 
     # The user has a high card, and the dealer does not have this or any higher card
     high_card_constraint = sum(user_high_card_conditions) & sum(dealer_not_higher_card_conditions)
@@ -189,7 +196,7 @@ def example_theory():
 
  #Three of a kind
     for num in NUMBERS:
-        is_three_of_a_kind
+
 
         E.add_constraint(                               #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
             Card(14, suit) & Card(14, suit) & Card(14, suit) |
@@ -205,7 +212,7 @@ def example_theory():
             Card(4, suit) & Card(4, suit) & Card(4, suit) |
             Card(3, suit) & Card(3, suit) & Card(3, suit) |
             Card(2, suit) & Card(2, suit) & Card(2, suit)
-        )
+        ) >> Hand.is_THREE_K
 
     #Flush
     for suit in SUITS:
@@ -214,7 +221,7 @@ def example_theory():
             Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
             Card(num, 'D') & Card(num, 'D') & Card(num, 'D') |         #Three diamonds
             Card(num, 'H') & Card(num, 'H') & Card(num, 'H')           #Three hearts
-        )
+        ) >> Hand.is_F
 
     
 
@@ -223,10 +230,73 @@ def example_theory():
         E.add_constraint(
             Card(num, suit) & Card(num, suit) & ~Card(num, suit) |    #NOT SURE WHERE TO PUT NEGATION
             ~Card(num, suit) & Card(num, suit) & Card(num, suit)
-        )
+        ) >> Hand.is_PAIR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def playOrFold():
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     ##PLAY OR FOLD RECOMMENDATIONS
 
     # High card is Ace or King for user
@@ -270,17 +340,72 @@ def playOrFold():
 
 
 
-#This function should determine the better hand
+
+
+
+
+
+
+
+
+
+
+
 def determineWinner():
     
     pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def main():
     deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
 
     cards1 = dealCards(deck)
     cards2 = dealCards(deck)
+    hand1 = cards1, handRanking()
+    for i in hand1:
+        print(i)
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
