@@ -125,7 +125,10 @@ z = FancyPropositions("z")
 #  This restriction is fairly minimal, and if there is any concern, reach out to the teaching staff to clarify
 #  what the expectations are.
 def example_theory():
-##DETERMINE HAND RANKINGS
+
+
+
+def handRanking():          ##DETERMINE HAND RANKINGS
 
     #Straight Flush for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
@@ -184,6 +187,8 @@ def example_theory():
 
  #Three of a kind
     for num in NUMBERS:
+        is_three_of_a_kind
+
         E.add_constraint(                               #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
             Card(14, suit) & Card(14, suit) & Card(14, suit) |
             Card(13, suit) & Card(13, suit) & Card(13, suit) |
@@ -219,7 +224,7 @@ def example_theory():
         )
 
 
-
+def playOrFold():
     ##PLAY OR FOLD RECOMMENDATIONS
 
     # High card is Ace or King for user
@@ -260,6 +265,13 @@ def example_theory():
     E.add_constraint(sum(q64_conditions))
 
     return E
+
+
+
+#This function should determine the better hand
+def determineWinner():
+    
+
 
 
 if __name__ == "__main__":
