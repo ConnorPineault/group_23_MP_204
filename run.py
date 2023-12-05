@@ -18,7 +18,7 @@ NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ac
 
 """ DEAL CARDS(): CREATES DECK | SHUFFLES | DEALS | AND PUTS CARDS BACK | """
 
-"""ABILITY TO INITIATE A SECOND PLAYER IF NEEDED"""
+
 def dealCards():
 
 
@@ -50,12 +50,12 @@ def dealCards():
     # cpu_hand_sorted = sorted(cpu_hand, key=lambda card: (card.number, card.suit))
 
 
-    print("USER:")
-    for card in u_hand_sorted:
-        print(f"{card.number}, Of {card.suit}")
-    print("DEALER:")
-    for card in d_hand_sorted:
-        print(f"{card.number}, Of {card.suit}")
+    ###print("USER:")
+    ###for card in u_hand_sorted:
+        ###print(f"{card.number}, Of {card.suit}")
+    ###print("DEALER:")
+    ###for card in d_hand_sorted:
+        ###print(f"{card.number}, Of {card.suit}")
     # print("CPU:")
     # for card in cpu_hand_sorted:
         # print(f"{card.number}, Of {card.suit}")
@@ -70,7 +70,9 @@ def dealCards():
     # for card in cpu_hand:
         # deck.append(card)
     
+    hand_lst = [u_hand_sorted, d_hand_sorted]
 
+    return hand_lst
 
 
 
@@ -82,8 +84,8 @@ class Card:
         self.number = number
         self.suit = suit
 
-    def __repr__(self):
-        return f"{self.player}.{self.number}.{self.suit}" 
+    #def __repr__(self):
+        #return f"{self.player}.{self.number}.{self.suit}" 
     
 
 
@@ -128,7 +130,7 @@ def example_theory():
 
 
 
-def handRanking():          ##DETERMINE HAND RANKINGS
+#def handRanking():          ##DETERMINE HAND RANKINGS
 
     #Straight Flush for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
@@ -271,16 +273,28 @@ def playOrFold():
 #This function should determine the better hand
 def determineWinner():
     
+    pass
+
+def main():
+
+
+    cards1 = dealCards()
+    cards2 = dealCards()
+
+
+    print("USER:")
+    for card in cards1[0]:
+        print(f"{card.number}, Of {card.suit}")
+
+    print("DEALER:")
+    for card in cards2[0]:
+        print(f"{card.number}, Of {card.suit}")
+
 
 
 
 if __name__ == "__main__":
-
-    dealCards()
-
-
-    
-
+    main()
 
         
     
