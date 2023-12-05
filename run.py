@@ -1,10 +1,10 @@
 import random
 from bauhaus import Encoding, proposition, constraint
-###from bauhaus.utils import count_solutions, likelihood
+from bauhaus.utils import count_solutions, likelihood
 
 # These two lines make sure a faster SAT solver is used.
-###from nnf import config
-###config.sat_backend = "kissat"
+from nnf import config
+config.sat_backend = "kissat"
 
 # Encoding that will store all of your constraints
 E = Encoding()
@@ -77,7 +77,7 @@ def dealCards(deck):
 
 
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
-#@proposition(E)
+@proposition(E)
 class Card:
 
     def __init__(self, number, suit):
@@ -102,8 +102,10 @@ class Hand:
 # that are instances of this class must be true by using a @constraint decorator.
 # other options include: at most one, exactly one, at most k, and implies all.
 # For a complete module reference, see https://bauhaus.readthedocs.io/en/latest/bauhaus.html
-#@constraint.at_least_one(E)
-#@proposition(E)
+@constraint.at_least_one(E)
+@proposition(E)
+
+
 class FancyPropositions:
 
     def __init__(self, data):
@@ -123,7 +125,14 @@ e = BasicPropositions("e")
 x = FancyPropositions("x")
 y = FancyPropositions("y")
 z = FancyPropositions("z")
+
+
 """
+SF = BasicPropositions("SF")
+FL = BasicPropositions("F")
+S = BasicPropositions("S")
+TK = BasicPropositions("TK")
+TK = BasicPropositions("TK")
 
 # Build an example full theory for your setting and return it.
 #
@@ -134,7 +143,7 @@ def example_theory():
 
     pass
 
-def handRanking():          ##DETERMINE HAND RANKINGS
+def handRanking(hand):          ##DETERMINE HAND RANKINGS
 
     #Straight Flush for user
     for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
@@ -194,7 +203,7 @@ def handRanking():          ##DETERMINE HAND RANKINGS
     
 
 
- #Three of a kind
+    #Three of a kind
     for num in NUMBERS:
 
 
@@ -313,8 +322,8 @@ def playOrFold():
                 Card(11, suit) | Card(10, suit) | Card(9, suit) |
                 Card(8, suit) | Card(7, suit)) 
             )
-  #          q64_conditions.append(condition)
-   # E.add_constraint(sum(q64_conditions))
+    q64_conditions.append(condition)
+    E.add_constraint(sum(q64_conditions))
 
     # Hand is Queen-6-4 or better for user
     q64_conditions = []
@@ -351,7 +360,7 @@ def playOrFold():
 
 
 
-def determineWinner():
+def determineWinner(hand1, hand2):
     
     pass
 
@@ -379,9 +388,10 @@ def main():
 
     cards1 = dealCards(deck)
     cards2 = dealCards(deck)
-    hand1 = cards1, handRanking()
-    for i in hand1:
-        print(i)
+    handRanking(cards1)
+    print(handRanking)
+   
+
     
 
 
@@ -421,7 +431,7 @@ if __name__ == "__main__":
 
 
 
-   # T = example_theory()
+    #T = example_theory()
     # Don't compile until you're finished adding all your constraints!
    # T = T.compile()
     # After compilation (and only after), you can check some of the properties
