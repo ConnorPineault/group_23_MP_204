@@ -1,6 +1,6 @@
 
 
-"""UP TO DATE"""
+"""CAM"""
 import random
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
@@ -19,60 +19,25 @@ NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ac
 
 
 
-""" DEAL CARDS
+""" FUNCTION: DEAL CARDS
     PARAMETER: DECK (FOUND IN MAIN)
     RETURNS: SORTED LIST OF 3 CARDS
     """
 
 def dealCards(deck):
 
-
-    #deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
-    
     random.shuffle(deck)
     u_hand = set()
-    #d_hand = set()
-    #cpu_hand = set()
 
     while len(u_hand) < 3 and deck:
         card = deck.pop()
         u_hand.add(card)
 
-    #while len(d_hand) < 3 and deck:
-        #card = deck.pop()
-        #if card not in u_hand and card not in cpu_hand: 
-            #d_hand.add(card)
-
-    #while len(cpu_hand) < 3 and deck:
-        #card = deck.pop()
-        #if card not in d_hand and card not in u_hand : 
-            #cpu_hand.add(card)
-        
-
     u_hand_sorted = sorted(u_hand, key=lambda card: (card.number, card.suit)) #SORTED!!
-    #d_hand_sorted = sorted(d_hand, key=lambda card: (card.number, card.suit))
-    # cpu_hand_sorted = sorted(cpu_hand, key=lambda card: (card.number, card.suit))
 
-
-    ###print("USER:")
-    ###for card in u_hand_sorted:
-        ###print(f"{card.number}, Of {card.suit}")
-    ###print("DEALER:")
-    ###for card in d_hand_sorted:
-        ###print(f"{card.number}, Of {card.suit}")
-    # print("CPU:")
-    # for card in cpu_hand_sorted:
-        # print(f"{card.number}, Of {card.suit}")
 
     
-    """option to put cards back into deck when/if playing multiple rounds"""
-    #put cards back
-    # for card in u_hand:
-        # deck.append(card)
-    # for card in d_hand:
-        # deck.append(card)
-    # for card in cpu_hand:
-        # deck.append(card)
+
     
     
 
@@ -165,30 +130,12 @@ def example_theory():
     PARAMETER: HAND 
     RETURNS: 
 """
-def handRanking(hand1): 
+def handRanking(hand): 
 
+    # Add a constraint that at least one of the straight conditions must be met
+    # Bauhaus encoding means that sum checks through each proposition in the list
+    # So if one proposition in list is correct it returns as true
     cards = hand1.cards
-    #print(cards[0].number)
-    #print(cards[0].suit)
- 
-
-
-
-
-
-            ##DETERMINE HAND RANKINGS
-
-    #Straight Flush for user
-  #  for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
- #       for suit in SUITS:
-
-
-
- #           E.add_constraint
-            
- #           (Card( i, suit) & Card(i+1, suit) & Card(i+2, suit))
-           
-            
 
     #Straight for user
     S = (cards[0].number + 1 == cards[1].number) and (cards[1].number + 1 == cards[2].number)
@@ -198,10 +145,7 @@ def handRanking(hand1):
         return True
 
 
-        # Add a constraint that at least one of the straight conditions must be met
-        # Bauhaus encoding means that sum checks through each proposition in the list
-        # So if one proposition in list is correct it returns as true
-
+    #STRAIGHT FLUSH
     SF = [
     ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit) & 
     (cards[0].number == cards[1].number + 1) & (cards[1].number == cards[2].number + 1))
@@ -213,49 +157,6 @@ def handRanking(hand1):
 
         return True
 
-
-
-
-
-
-
-
-    """
-    #High card for user
-    high_card_constraints = []
-    #We iterate over the numbers starting from the highest (Ace)
-    #Then go down to the lowest to find the high card for the user and dealer.
-    for num in reversed(NUMBERS):
-        user_high_card_conditions = []
-        dealer_not_higher_card_conditions = []
-
-        for suit in SUITS:
-            # User high card condition for a specific suit
-            user_high_card_conditions.append(Card(num, suit))
-
-            # Dealer not having this card or any higher card for all suits
-            for any_suit in SUITS:
-                dealer_not_higher_card_conditions.append(~Card(num, any_suit))
-            for higher in NUMBERS:
-                if higher > num:  # Only consider cards that are of higher rank
-                    for any_suit in SUITS:
-                        dealer_not_higher_card_conditions.append(~Card(higher, any_suit)) >> Hand.is_HC
-
-    # The user has a high card, and the dealer does not have this or any higher card
-    high_card_constraint = sum(user_high_card_conditions) & sum(dealer_not_higher_card_conditions)
-    high_card_constraints.append(high_card_constraint)
-    
-    # If no better hand we then compare high cards
-    # Need to add the constraints for pair then high card if pair is same, same for straight, flush and straight flush, and if they have same high card (different suit)
-    # Also need to account for ties depending on what cards they have
-    if_no_better_hand = (...)  # We need to add a condition that ensures no better hand is present for either user or the dealer
-    E.add_constraint(if_no_better_hand >> sum(high_card_constraints))
-
-    """
-    
-
-
-    
 
     #THREE OF A KIND
     TK = [
@@ -276,16 +177,7 @@ def handRanking(hand1):
         print('flush')
         return True
 
-
-
-    #Hand.FL =     (Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
-    #                Card(num, 'D') & Card(num, 'D') & Card(num, 'D') |         #Three diamonds
-    #               Card(num, 'H') & Card(num, 'H') & Card(num, 'H'))          #Three hearts
-    
-
-    
-
-    #Pair           #Not sure if cards P works
+    #Pair       
     P = [
         ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
         for num in NUMBERS
@@ -309,7 +201,10 @@ def handRanking(hand1):
 
     """
 
-
+"""FUNCTION: PLAY OR FOLD
+   PARAMETER: 
+   RETURNS: 
+"""
 def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 
     # High card is Ace or King for user
