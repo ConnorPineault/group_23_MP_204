@@ -75,6 +75,7 @@ class Hand:
         self.FL = False
       # self.P = handRanking()
         self.P = False
+        self.TP = False
         self.HC = False
         self.win = False
         
@@ -123,7 +124,7 @@ class FancyPropositions:
 
 
 
-# Build an example full theory for your setting and return it.
+#  Build an example full theory for your setting and return it.
 #
 #  There should be at least 10 variables, and a sufficiently large formula to describe it (>50 operators).
 #  This restriction is fairly minimal, and if there is any concern, reach out to the teaching staff to clarify
@@ -156,7 +157,7 @@ def handRanking(hand):
     # So if one proposition in list is correct it returns as true
     cards = hand.cards + hand.shared_cards
     cards.sort(key=lambda card: (card.number, card.suit))
-    print(cards)
+    #print(cards)
 
 
     
@@ -211,6 +212,23 @@ def handRanking(hand):
         print('flush')
         hand.FL = True
         return True
+
+
+# Two - Pair
+    TP = [
+    ((cards[0].number == cards[1].number) & (cards[2].number == cards[3].number)) |
+    ((cards[0].number == cards[1].number) & (cards[3].number == cards[4].number)) |
+    ((cards[1].number == cards[2].number) & (cards[3].number == cards[4].number)) |
+    ((cards[2].number == cards[3].number) & (cards[4].number == cards[0].number))
+    ]
+
+    if any(TP):
+        print('two pair')
+        hand.TP = True
+        return True
+
+
+
 
 #Pair       
     P = [
@@ -330,6 +348,9 @@ def determineWinner(hand1, hand2):
         hand1.win = True
         return True
 
+    
+
+
 
     #USER HAS A STRAIGHT
     win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.FL)
@@ -337,14 +358,22 @@ def determineWinner(hand1, hand2):
         hand1.win = True
         return True
 
+
+    #USER HAS 2-PAIR    
+    win = (hand1.TP and not hand2.SF and not hand2.TK and not hand2.S and not hand2.FL and not hand2.TP)
+    if (win):
+        hand1.win = True
+        return True
+
+
     #USER HAS A PAIR
-    win = (hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL)
+    win = (hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
     if (win):
         hand1.win = True
         return True
     
     #HIGH CARD
-    HC = (not hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL)
+    HC = (not hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
     if (HC):
         cards1 = hand1.cards
         cards2 = hand2.cards
@@ -382,31 +411,58 @@ def determineWinner(hand1, hand2):
     RETURNS: TRUE (FOR WINNING RANK)
     """
 def main():
+
+
+
+
+
+    # order should go as follows: 
+
+    # user sees cards. 
+    # user sees table cards
+    # play or fold function runs. 
+    # user decides 
+    # user sees dealers cards
+    # win determined
+    # result shown
+
     deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
     shared_cards = dealCards(deck)
     shared_cards.pop(0) #burn first card
- 
-    print("TABLE: ",shared_cards)
-    cards1 = dealCards(deck)    
-    print(cards1)
-    hand1 = Hand(cards1,shared_cards)
 
+
+
+    cards1 = dealCards(deck)    
+    hand1 = Hand(cards1,shared_cards)
     cards2 = dealCards(deck)
-    print(cards2)
     hand2 = Hand(cards2,shared_cards)
 
 
-    handRanking(hand1)
 
+    print("User Cards: ", cards1)
+    # playOrFold()
+
+
+
+    print("TABLE CARDS", shared_cards)
+    
+    print("Dealer Cards: ",cards2)
+    handRanking(hand1)
     handRanking(hand2)
 
-    print("Test!    Straight Flush: ", hand1.SF, ", Flush:", hand1.FL, ", Pair:", hand1.P, ", Three of:", hand1.TK, ", Straight:", hand1.S)
-    print("Test!    Straight Flush: ", hand1.SF, ", Flush:", hand2.FL, ", Pair:", hand2.P, ", Three of:", hand2.TK, ", Straight:", hand2.S)
+    
+    determineWinner(hand1,hand2)
+    print("USER: ", hand1.win)
+    print("DEALER: ", hand2.win)
 
 
-    determineWinner(hand1, hand2)
-    print("Hand1: ", hand1.win)
-    print("Hand2: ", hand2.win)
+
+
+
+
+    #print("Test!    Straight Flush: ", hand1.SF, ", Flush:", hand1.FL, ", Pair:", hand1.P, ", Three of:", hand1.TK, ", Straight:", hand1.S)
+   # print("Test!    Straight Flush: ", hand1.SF, ", Flush:", hand2.FL, ", Pair:", hand2.P, ", Three of:", hand2.TK, ", Straight:", hand2.S)
+
     
     
 
