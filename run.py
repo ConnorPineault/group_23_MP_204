@@ -278,7 +278,7 @@ def handRanking(hand1):
     
 
     #Pair           #Not sure if cards P works
-    cards.P = [
+    P = [
         ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
         for num in NUMBERS
     ]
