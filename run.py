@@ -19,8 +19,10 @@ NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ac
 
 
 
-""" DEAL CARDS(): CREATES DECK | SHUFFLES | DEALS | AND PUTS CARDS BACK | """
-
+""" DEAL CARDS
+    PARAMETER: DECK (FOUND IN MAIN)
+    RETURNS: SORTED LIST OF 3 CARDS
+    """
 
 def dealCards(deck):
 
@@ -159,7 +161,10 @@ def example_theory():
 
 
 
-#THIS FUNCTION DETERMINES THE HAND RANK OF THE HAND
+""" HANDRANK
+    PARAMETER: HAND 
+    RETURNS: 
+"""
 def handRanking(hand1): 
 
     cards = hand1.cards
@@ -240,10 +245,9 @@ def handRanking(hand1):
     
 
 
-    #Three of a kind
     
 
-
+    #THREE OF A KIND
     TK = [
     ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num))
     for num in NUMBERS
@@ -252,7 +256,7 @@ def handRanking(hand1):
     if any(TK):
         print('three of a kind')
         return True
-
+    #FLUSH
     FL = [
     ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit))
     for suit in SUITS
