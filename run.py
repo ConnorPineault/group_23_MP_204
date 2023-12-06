@@ -245,21 +245,14 @@ def handRanking(hand1):
     
 
 
-    #Hand.TK    (                                                       #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
-    #            Card(14, suit) & Card(14, suit) & Card(14, suit) |
-    #            Card(13, suit) & Card(13, suit) & Card(13, suit) |
-    #            Card(12, suit) & Card(12, suit) & Card(12, suit) |
-    #            Card(11, suit) & Card(11, suit) & Card(11, suit) |
-    #            Card(10, suit) & Card(10, suit) & Card(10, suit) |
-    #            Card(9, suit) & Card(9, suit) & Card(9, suit) |
-    #            Card(8, suit) & Card(8, suit) & Card(8, suit) |
-    #            Card(7, suit) & Card(7, suit) & Card(7, suit) |
-    #            Card(6, suit) & Card(6, suit) & Card(6, suit) |
-    #            Card(5, suit) & Card(5, suit) & Card(5, suit) |
-    #            Card(4, suit) & Card(4, suit) & Card(4, suit) |
-    #            Card(3, suit) & Card(3, suit) & Card(3, suit) |
-    #            Card(2, suit) & Card(2, suit) & Card(2, suit)
-    #        )
+    TK = [
+    ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num))
+    for num in NUMBERS
+    ]
+
+    if any(TK):
+        print('three of a kind')
+        return True
 
     #Flush
     #for suit in SUITS:
