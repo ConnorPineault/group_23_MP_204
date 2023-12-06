@@ -1,6 +1,6 @@
 
 
-"""CAM"""
+
 import random
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
@@ -12,11 +12,14 @@ config.sat_backend = "kissat"
 # Encoding that will store all of your constraints
 E = Encoding()
 
-#SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
-#NUMBERS = list(range(2, 15))
+SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
+NUMBERS = list(range(2, 15))
   # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
-SUITS = ['S','H'] 
-NUMBERS = list(range(2, 6))
+
+
+#test_case
+#SUITS = ['S','H'] 
+#NUMBERS = list(range(2, 6))
 
 
 
