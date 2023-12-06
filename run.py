@@ -91,13 +91,15 @@ class Card:
     
 
 class Hand:
-    def __init__(self, cards):
-        self.cards = cards
+    def __init__(self, card1, card2, card3):
+        self.cards = [card1, card2, card3]
         self.SF = False
-        self.F = False
+        self.TK = False
         self.S = False
+        self.FL = False
        # self.P = handRanking()
         self.P = False
+        self.HC = False
         
 
 
@@ -333,6 +335,7 @@ def main():
 
     cards1 = dealCards(deck)
     print(cards1)
+    Hand(cards1)
     handRanking(cards1)
     
 
