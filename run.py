@@ -268,12 +268,16 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 def determineWinner(hand1, hand2):
 
     #USER HAS A STRAIGHT FLUSH, DEALER DOES NOT
+<<<<<<< HEAD
     win = (hand1.SF and not hand2.SF)
     if (win):
         hand1.win = True
         return True
 
     
+=======
+    hand1.win = hand1.SF and not hand2.SF  
+>>>>>>> bc4aeac (test)
     #USER HAS THREE OF A KIND
     win = (hand1.TK and not hand2.SF and not hand2.TK)
     if (win):
@@ -281,6 +285,7 @@ def determineWinner(hand1, hand2):
         return True
 
     #USER HAS A STRAIGHT
+<<<<<<< HEAD
     win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S)
     if (win):
         hand1.win = True
@@ -291,6 +296,12 @@ def determineWinner(hand1, hand2):
     if (win):
         hand1.win = True
         return True
+=======
+    hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S) 
+
+    #USER HAS A PAIR
+    hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P) 
+>>>>>>> bc4aeac (test)
 
     cards1 = hand1.cards
     cards2 = hand2.cards
