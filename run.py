@@ -17,19 +17,14 @@ NUMBERS = list(range(2, 15))
   # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
 
 
-#test_case
-#SUITS = ['S','H'] 
-#NUMBERS = list(range(2, 6))
-
 
 
 
 
 """ FUNCTION: DEAL CARDS
     PARAMETER: DECK (FOUND IN MAIN)
-    RETURNS: SORTED LIST OF 3 CARDS
+    RETURNS: U_HAND_SORTED (SORTED LIST OF 3 CARDS)
     """
-
 def dealCards(deck):
 
     random.shuffle(deck)
@@ -41,18 +36,20 @@ def dealCards(deck):
 
     u_hand_sorted = sorted(u_hand, key=lambda card: (card.number, card.suit)) #SORTED!!
 
-
-    
-
-    
-    
-
     return u_hand_sorted
 
 
 
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
-@proposition(E)
+#@proposition(E)
+
+    
+
+
+""" CLASS: CARD
+    ATTRIBUTES: NUMBER, SUIT
+    METHODS: __init__, __repr__  
+    """
 class Card:
 
     def __init__(self, number, suit):
@@ -62,7 +59,10 @@ class Card:
     def __repr__(self):
         return f"{self.number}.{self.suit}" 
     
-
+""" CLASS: HAND
+    ATTRIBUTES: CARDS, SHARED_CARDS, HAND RANKS
+    METHODS: N/A
+    """
 class Hand:
     def __init__(self, cards, shared_cards):        #CARD 1,2,3 ???
         self.cards = cards
@@ -87,10 +87,30 @@ class Hand:
 # that are instances of this class must be true by using a @constraint decorator.
 # other options include: at most one, exactly one, at most k, and implies all.
 # For a complete module reference, see https://bauhaus.readthedocs.io/en/latest/bauhaus.html
-@constraint.at_least_one(E)
-@proposition(E)
 
 
+"""CONSTRAINTS"""
+###    @constraint.at_least_one(E)
+###    @proposition(E)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""" CLASS: FANCY PROPOSITIONS
+    ATTRIBUTES: N/A
+    METHODS: __init__, __repr__  
+    """
 class FancyPropositions:
 
     def __init__(self, data):
@@ -99,20 +119,8 @@ class FancyPropositions:
     def __repr__(self):
         return f"A.{self.data}"
 
-# Call your variables whatever you want
-"""
-a = BasicPropositions("a")
-b = BasicPropositions("b")   
-c = BasicPropositions("c")
-d = BasicPropositions("d")
-e = BasicPropositions("e")
-# At least one of these will be true
-x = FancyPropositions("x")
-y = FancyPropositions("y")
-z = FancyPropositions("z")
 
 
-"""
 
 
 # Build an example full theory for your setting and return it.
@@ -126,10 +134,21 @@ def example_theory():
 
 
 
-""" HANDRANK
-    PARAMETER: HAND 
-    RETURNS: 
-"""
+
+
+
+
+
+
+
+
+
+
+
+""" FUNCTION: HANDRANKING
+    PARAMETER: HAND (FOUND IN MAIN)
+    RETURNS: TRUE (FOR FOUND RANK)
+    """
 def handRanking(hand): 
 
     # Add a constraint that at least one of the straight conditions must be met
@@ -204,6 +223,26 @@ def handRanking(hand):
         return True
     
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""" FUNCTION: PLAY OR FOLD
+    PARAMETER: HAND (FOUND IN MAIN)
+    RETURNS: ...
+    """
 def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 
     # High card is Ace or King for user
@@ -247,8 +286,29 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 
 
 
-#THIS FUNCTION DETERMINES WHICH HAND IS BETTER      STILL NEED TO ADD TIES!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""" FUNCTION: DETERMINE WINNER
+    PARAMETER: HAND1, HAND2 (FOUND IN MAIN)
+    RETURNS: TRUE (FOR WINNING RANK)
+    """    
+#  STILL NEED TO ADD TIES!!!
 def determineWinner(hand1, hand2):
+
 
 
 
@@ -301,8 +361,26 @@ def determineWinner(hand1, hand2):
     if (hand1.win == False):
         hand2.win = True
         return True
-  
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""" FUNCTION: DETERMINE WINNER
+    PARAMETER: HAND1, HAND2 (FOUND IN MAIN)
+    RETURNS: TRUE (FOR WINNING RANK)
+    """
 def main():
     deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
     shared_cards = dealCards(deck)
