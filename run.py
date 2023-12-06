@@ -368,6 +368,8 @@ def main():
     handRanking(hand1)
 
     handRanking(hand2)
+
+    print("Test:    Flush", hand1.FL, "Pair", hand1.P, "Three of", hand1.TK)
     
 
 
