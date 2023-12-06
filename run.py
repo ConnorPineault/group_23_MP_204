@@ -136,16 +136,7 @@ def handRanking(hand):
     # Bauhaus encoding means that sum checks through each proposition in the list
     # So if one proposition in list is correct it returns as true
     cards = hand.cards
-
-    #Straight for user
-    S = (cards[0].number + 1 == cards[1].number) and (cards[1].number + 1 == cards[2].number)
-
-    if S:
-        print("Straight")
-        return True
-
-
-    #STRAIGHT FLUSH
+#STRAIGHT FLUSH
     SF = [
     ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit) & 
     (cards[0].number == cards[1].number + 1) & (cards[1].number == cards[2].number + 1))
@@ -154,20 +145,22 @@ def handRanking(hand):
 
     if any(SF):
         print('straight flush')
-
         return True
-
-
-    #THREE OF A KIND
+    
+#THREE OF A KIND
     TK = [
     ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num))
     for num in NUMBERS
     ]
 
-    if any(TK):
-        print('three of a kind')
+#Straight
+    S = (cards[0].number + 1 == cards[1].number) and (cards[1].number + 1 == cards[2].number)
+
+    if S:
+        print("Straight")
         return True
-    #FLUSH
+
+#FLUSH
     FL = [
     ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit))
     for suit in SUITS
@@ -177,7 +170,7 @@ def handRanking(hand):
         print('flush')
         return True
 
-    #Pair       
+#Pair       
     P = [
         ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
         for num in NUMBERS
