@@ -190,7 +190,7 @@ def handRanking(hand1):
 
     if straight:
         print("Straight")
-
+        return True
 
 
         # Add a constraint that at least one of the straight conditions must be met
