@@ -114,14 +114,7 @@ z = FancyPropositions("z")
 
 """
 
-"""
-SF = BasicPropositions("SF")
-FL = BasicPropositions("F")
-S =  BasicPropositions("S")
-TK = BasicPropositions("TK")
-P =  BasicPropositions("P")
-HC = BasicPropositions("HC")
-"""
+
 # Build an example full theory for your setting and return it.
 #
 #  There should be at least 10 variables, and a sufficiently large formula to describe it (>50 operators).
@@ -142,52 +135,58 @@ def handRanking(hand):
     # Add a constraint that at least one of the straight conditions must be met
     # Bauhaus encoding means that sum checks through each proposition in the list
     # So if one proposition in list is correct it returns as true
-    cards = hand.cards
+    cards = hand.cards + hand.shared_cards
+    cards.sort(key=lambda card: (card.number, card.suit))
+    print(cards)
 
 
     
 #STRAIGHT FLUSH
     SF = [
-    ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit) & 
-    (cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1))
-    for suit in SUITS
-]
+            (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit == cards[4].suit) &
+            ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1)) | 
+            (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) & (cards[3].number == cards[4].number - 1) 
+    ]
+
+
+
+    
 
     if any(SF):
         print('straight flush')
         hand.SF = True
         return True
-    """BROKEN SF
-SF = [
-    ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit) & 
-    (cards[0].number == cards[1].number + 1) & (cards[1].number == cards[2].number + 1))
-    for suit in SUITS
-    ]
-    if any(SF):
-        print('straight flush')
-        return True
-    """
 
-    
 #THREE OF A KIND
     TK = [
-    ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num))
+    ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num)) |
+     ((cards[1].number == num) & (cards[2].number == num) & (cards[3].number == num)) |
+      ((cards[2].number == num) & (cards[3].number == num) & (cards[4].number == num)) 
+
     for num in NUMBERS
     ]
 
-#Straight
-    S = (cards[0].number + 1 == cards[1].number) and (cards[1].number + 1 == cards[2].number)
+    if any(TK):
+        print('three of a kind')
+        hand.TK = True
+        return True
 
-    if S:
-        print("Straight")
+
+#Straight | with 4 in a row | subject to change
+    S = [
+    ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) &  (cards[2].number == cards[3].number - 1))|
+    (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) &  (cards[3].number == cards[4].number - 1)
+    ]
+
+    if any(S):
+        print('straight')
         hand.S = True
         return True
 
 #FLUSH
     FL = [
-    ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit))
-    for suit in SUITS
-    ]
+    (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit)
+     ]
 
     if any(FL):
         print('flush')
@@ -196,32 +195,15 @@ SF = [
 
 #Pair       
     P = [
-        ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
-        for num in NUMBERS
+    ((cards[0].number == cards[1].number) | (cards[1].number == cards[2].number) | 
+     (cards[2].number == cards[3].number) | (cards[3].number == cards[4].number))
     ]
     if any(P):
         print('pair')
         hand.P = True
         return True
     
-    """"
 
-        #Pair           #Not sure if cards P works
-    cards.P = [
-        ((cards.card1.number == num) & (cards.card2.number == num) & (cards.cards3.number != num)) or ((cards.card1.number != num) & (cards[1].number == num) & (cards[2].number == num))
-        for num in NUMBERS
-    ]
-    if any(P):
-        print('pair')
-    
-        return True
-
-    """
-
-"""FUNCTION: PLAY OR FOLD
-   PARAMETER: 
-   RETURNS: 
-"""
 def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 
     # High card is Ace or King for user
@@ -268,61 +250,72 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 #THIS FUNCTION DETERMINES WHICH HAND IS BETTER      STILL NEED TO ADD TIES!!!
 def determineWinner(hand1, hand2):
 
+
+
     #USER HAS A STRAIGHT FLUSH, DEALER DOES NOT
     win = (hand1.SF and not hand2.SF)
     if (win):
         hand1.win = True
         return True
 
-    
+   
     #USER HAS THREE OF A KIND
     win = (hand1.TK and not hand2.SF and not hand2.TK)
     if (win):
         hand1.win = True
         return True
+    #USER HAS FLUSH
+    win = (hand1.FL and not hand2.SF and not hand2.TK)
+    if (win):
+        hand1.win = True
+        return True
+
 
     #USER HAS A STRAIGHT
-    win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S)
+    win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.FL)
     if (win):
         hand1.win = True
         return True
 
     #USER HAS A PAIR
-    win = (hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P)
+    win = (hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL)
     if (win):
         hand1.win = True
         return True
-
-    cards1 = hand1.cards
-    cards2 = hand2.cards
-    hc1 = cards1[2]
-    hc2 = cards2[2]
-
-    #USER HAS A HIGH CARD
-    if (hand1.HC & hand2.HC):
-        if (hc1 > hc2):
-            hand1.win = True
-            return True
+    
+    #HIGH CARD
+    HC = (not hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL)
+    if (HC):
+        cards1 = hand1.cards
+        cards2 = hand2.cards
+        hc1 = cards1[2]
+        hc2 = cards2[2]
+        print(hc1)
+        print(hc2)
+        if (hand1.cards[2].number > hand2.cards[2].number):
+                hand1.win = True
+                return True
         else:
-            hand2.win = True
-            return True
-            
+                hand2.win = True
+                return True
     if (hand1.win == False):
         hand2.win = True
         return True
-    
+  
     
 def main():
     deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
-    shared_cards = dealCards()
-    print(shared_cards)
+    shared_cards = dealCards(deck)
+    shared_cards.pop(0) #burn first card
+ 
+    print("TABLE: ",shared_cards)
     cards1 = dealCards(deck)    
     print(cards1)
-    hand1 = Hand(cards1)
+    hand1 = Hand(cards1,shared_cards)
 
     cards2 = dealCards(deck)
     print(cards2)
-    hand2 = Hand(cards2)
+    hand2 = Hand(cards2,shared_cards)
 
 
     handRanking(hand1)
@@ -336,6 +329,7 @@ def main():
     determineWinner(hand1, hand2)
     print("Hand1: ", hand1.win)
     print("Hand2: ", hand2.win)
+    
     
 
 
