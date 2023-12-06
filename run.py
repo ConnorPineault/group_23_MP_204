@@ -12,8 +12,11 @@ config.sat_backend = "kissat"
 # Encoding that will store all of your constraints
 E = Encoding()
 
-SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
-NUMBERS = list(range(2, 15))  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
+#SUITS = ['S', 'C', 'D', 'H']  # Spades, Clubs, Diamonds, Hearts
+#NUMBERS = list(range(2, 15))
+  # 2 to 14, where 11=Jack, 12=Queen, 13=King, 14=Ace
+SUITS = ['S','H'] 
+NUMBERS = list(range(2, 6))
 
 
 
@@ -139,13 +142,24 @@ def handRanking(hand):
 #STRAIGHT FLUSH
     SF = [
     ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit) & 
-    (cards[0].number == cards[1].number + 1) & (cards[1].number == cards[2].number + 1))
+    (cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1))
     for suit in SUITS
-    ]
+]
 
     if any(SF):
         print('straight flush')
         return True
+    """BROKEN SF
+SF = [
+    ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit) & 
+    (cards[0].number == cards[1].number + 1) & (cards[1].number == cards[2].number + 1))
+    for suit in SUITS
+    ]
+    if any(SF):
+        print('straight flush')
+        return True
+    """
+
     
 #THREE OF A KIND
     TK = [
