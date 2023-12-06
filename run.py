@@ -91,10 +91,10 @@ class Card:
     
 
 class Hand:
-    def __init__(self, card1, card2, card3):
-        self.card1 = card1
-        self.card2 = card2
-        self.card3 = card3
+    def __init__(self, cards):        #CARD 1,2,3 ???
+        self.cards = cards
+      #  self.card2 = card2
+      #  self.card3 = card3
         self.SF = False
         self.TK = False
         self.S = False
@@ -162,7 +162,7 @@ def example_theory():
 #THIS FUNCTION DETERMINES THE HAND RANK OF THE HAND
 def handRanking(hand1): 
 
-    cards = hand1
+    cards = hand1.cards
     #print(cards[0].number)
     #print(cards[0].suit)
  
@@ -281,11 +281,11 @@ def handRanking(hand1):
     
         return True
     
-
+    """"
 
         #Pair           #Not sure if cards P works
     cards.P = [
-        ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
+        ((cards.card1.number == num) & (cards.card2.number == num) & (cards.cards3.number != num)) or ((cards.card1.number != num) & (cards[1].number == num) & (cards[2].number == num))
         for num in NUMBERS
     ]
     if any(P):
@@ -293,7 +293,7 @@ def handRanking(hand1):
     
         return True
 
-    
+    """
 
 
 def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
@@ -358,11 +358,11 @@ def main():
 
     cards1 = dealCards(deck)    
     print(cards1)
-    hand1 = Hand(cards1[0], cards1[1], cards1[2])
+    hand1 = Hand(cards1)
 
     cards2 = dealCards(deck)
     print(cards2)
-    hand2 = Hand(cards2[0], cards2[1], cards2[2])
+    hand2 = Hand(cards2)
 
 
     handRanking(hand1)
