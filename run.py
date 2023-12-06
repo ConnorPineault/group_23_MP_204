@@ -167,15 +167,11 @@ def handRanking(hand):
             ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1)) | 
             (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) & (cards[3].number == cards[4].number - 1) 
     ]
-
-
-
-    
-
     if any(SF):
         print('straight flush')
         hand.SF = True
         return True
+    
 
 #THREE OF A KIND
     TK = [
