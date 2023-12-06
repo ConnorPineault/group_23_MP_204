@@ -91,8 +91,8 @@ class Card:
     
 
 class Hand:
-    def __init__(self, card1, card2, card3):
-        self.cards = [card1, card2, card3]
+    def __init__(self, cards):
+        self.cards = cards
         self.SF = False
         self.TK = False
         self.S = False
@@ -154,7 +154,11 @@ def example_theory():
 
     pass
 
-def handRanking(cards): 
+
+
+#THIS FUNCTION DETERMINES THE HAND RANK OF THE HAND
+def handRanking(hand1): 
+
     #print(cards[0].number)
     #print(cards[0].suit)
  
@@ -326,6 +330,10 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
     E.add_constraint(sum(q64_conditions))
 
     return E
+
+
+
+#THIS FUNCTION DETERMINES WHICH HAND IS BETTER
 def determineWinner(hand1, hand2):
     
     pass
@@ -333,10 +341,16 @@ def main():
     deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
 
 
-    cards1 = dealCards(deck)
+    cards1 = dealCards(deck)    
     print(cards1)
-    Hand(cards1)
-    handRanking(cards1)
+    hand1 = Hand(cards1)
+
+    cards2 = dealCards(deck)
+    print(cards2)
+    hand2 = Hand(cards2)
+
+
+    handRanking(hand1, hand2)
     
 
 
