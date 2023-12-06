@@ -254,13 +254,15 @@ def handRanking(hand1):
         print('three of a kind')
         return True
 
-    #Flush
-    #for suit in SUITS:
-    #    E.add_constraint(                               #ADD ~SF AND ~T ONCE HAND RANKINGS HAVE PROPOSITION
-    #        Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
-    #        Card(num, 'D') & Card(num, 'D') & Card(num, 'D') |         #Three diamonds
-    #        Card(num, 'H') & Card(num, 'H') & Card(num, 'H')           #Three hearts
-   #    ) >> Hand.is_F
+    FL = [
+    ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit))
+    for suit in SUITS
+    ]
+
+    if any(FL):
+        print('flush')
+        return True
+
 
 
     #Hand.FL =     (Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
