@@ -91,8 +91,10 @@ class Card:
     
 
 class Hand:
-    def __init__(self, cards):
-        self.cards = cards
+    def __init__(self, card1, card2, card3):
+        self.card1 = card1
+        self.card2 = card2
+        self.card3 = card3
         self.SF = False
         self.TK = False
         self.S = False
@@ -100,6 +102,7 @@ class Hand:
        # self.P = handRanking()
         self.P = False
         self.HC = False
+        self.win = False
         
 
 
@@ -159,6 +162,7 @@ def example_theory():
 #THIS FUNCTION DETERMINES THE HAND RANK OF THE HAND
 def handRanking(hand1): 
 
+    cards = hand1
     #print(cards[0].number)
     #print(cards[0].suit)
  
@@ -286,6 +290,18 @@ def handRanking(hand1):
         print('pair')
     
         return True
+    
+
+
+        #Pair           #Not sure if cards P works
+    cards.P = [
+        ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
+        for num in NUMBERS
+    ]
+    if any(P):
+        print('pair')
+    
+        return True
 
     
 
@@ -335,22 +351,33 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 
 #THIS FUNCTION DETERMINES WHICH HAND IS BETTER
 def determineWinner(hand1, hand2):
+
+    #USER HAS A STRAIGHT FLUSH, DEALER DOES NOT
+    hand1.win = (hand1.SF & ~hand2.SF)
     
-    pass
+    #USER HAS THREE OF A KIND
+    hand1.win = (hand1.T & ~hand2.SF & ~hand2.T)
+            
+
+
+    
+    
 def main():
     deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
 
 
     cards1 = dealCards(deck)    
     print(cards1)
-    hand1 = Hand(cards1)
+    hand1 = Hand(cards1[0], cards1[1], cards1[2])
 
     cards2 = dealCards(deck)
     print(cards2)
-    hand2 = Hand(cards2)
+    hand2 = Hand(cards2[0], cards2[1], cards2[2])
 
 
-    handRanking(hand1, hand2)
+    handRanking(hand1)
+
+    handRanking(hand2)
     
 
 
