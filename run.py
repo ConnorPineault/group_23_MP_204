@@ -249,29 +249,24 @@ def handRanking(hand1):
     
 
 
-    #Hand.TK    (                                                       #ADD ~SF AND ONCE HAND RANKINGS HAVE PROPOSITION
-    #            Card(14, suit) & Card(14, suit) & Card(14, suit) |
-    #            Card(13, suit) & Card(13, suit) & Card(13, suit) |
-    #            Card(12, suit) & Card(12, suit) & Card(12, suit) |
-    #            Card(11, suit) & Card(11, suit) & Card(11, suit) |
-    #            Card(10, suit) & Card(10, suit) & Card(10, suit) |
-    #            Card(9, suit) & Card(9, suit) & Card(9, suit) |
-    #            Card(8, suit) & Card(8, suit) & Card(8, suit) |
-    #            Card(7, suit) & Card(7, suit) & Card(7, suit) |
-    #            Card(6, suit) & Card(6, suit) & Card(6, suit) |
-    #            Card(5, suit) & Card(5, suit) & Card(5, suit) |
-    #            Card(4, suit) & Card(4, suit) & Card(4, suit) |
-    #            Card(3, suit) & Card(3, suit) & Card(3, suit) |
-    #            Card(2, suit) & Card(2, suit) & Card(2, suit)
-    #        )
+    TK = [
+    ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num))
+    for num in NUMBERS
+    ]
 
-    #Flush
-    #for suit in SUITS:
-    #    E.add_constraint(                               #ADD ~SF AND ~T ONCE HAND RANKINGS HAVE PROPOSITION
-    #        Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
-    #        Card(num, 'D') & Card(num, 'D') & Card(num, 'D') |         #Three diamonds
-    #        Card(num, 'H') & Card(num, 'H') & Card(num, 'H')           #Three hearts
-   #    ) >> Hand.is_F
+    if any(TK):
+        print('three of a kind')
+        return True
+
+    FL = [
+    ((cards[0].suit == suit) & (cards[1].suit == suit) & (cards[2].suit == suit))
+    for suit in SUITS
+    ]
+
+    if any(FL):
+        print('flush')
+        return True
+
 
 
     #Hand.FL =     (Card(num, 'C') & Card(num, 'C') & Card(num,'C') |         #Three clubs
@@ -282,7 +277,7 @@ def handRanking(hand1):
     
 
     #Pair           #Not sure if cards P works
-    cards.P = [
+    P = [
         ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number != num)) or ((cards[0].number != num) & (cards[1].number == num) & (cards[2].number == num))
         for num in NUMBERS
     ]
