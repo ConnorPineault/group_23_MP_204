@@ -135,7 +135,7 @@ def handRanking(hand):
     # Add a constraint that at least one of the straight conditions must be met
     # Bauhaus encoding means that sum checks through each proposition in the list
     # So if one proposition in list is correct it returns as true
-    cards = hand1.cards
+    cards = hand.cards
 
     #Straight for user
     S = (cards[0].number + 1 == cards[1].number) and (cards[1].number + 1 == cards[2].number)
