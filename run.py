@@ -186,15 +186,10 @@ def handRanking(hand1):
             
 
     #Straight for user
-   # for i in range(2, 13):  # Loop through numbers 2 to 12 for the start of a straight
-   #     straight_conditions = []
-   #     for suit1 in SUITS:
-   #         for suit2 in SUITS:
-   #             for suit3 in SUITS:
-   #                 straight_conditions.append(
-   #                     Card(i, suit1) & Card(i+1, suit2) & Card(i+2, suit3)
-   #                 ) 
-   #     E.add_constraint(sum(straight_conditions))
+    straight = (cards[0].number + 1 == cards[1].number) and (cards[1].number + 1 == cards[2].number)
+
+    if straight:
+        print("Straight")
 
 
 
