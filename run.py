@@ -268,16 +268,29 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 def determineWinner(hand1, hand2):
 
     #USER HAS A STRAIGHT FLUSH, DEALER DOES NOT
-    hand1.win = hand1.SF and not hand2.SF
+    win = (hand1.SF and not hand2.SF)
+    if (win):
+        hand1.win = True
+        return True
+
     
     #USER HAS THREE OF A KIND
-    hand1.win = (hand1.TK and not hand2.SF and not hand2.TK)
+    win = (hand1.TK and not hand2.SF and not hand2.TK)
+    if (win):
+        hand1.win = True
+        return True
 
     #USER HAS A STRAIGHT
-    hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S)
+    win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S)
+    if (win):
+        hand1.win = True
+        return True
 
     #USER HAS A PAIR
-    hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P)
+    win = (hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P)
+    if (win):
+        hand1.win = True
+        return True
 
     cards1 = hand1.cards
     cards2 = hand2.cards
@@ -285,14 +298,17 @@ def determineWinner(hand1, hand2):
     hc2 = cards2[2]
 
     #USER HAS A HIGH CARD
-    if (hand1.HC & hand1.HC):
+    if (hand1.HC & hand2.HC):
         if (hc1 > hc2):
-            hand1.win = (hand1.HC & hand1.HC)
+            hand1.win = True
+            return True
         else:
-            hand2.win
+            hand2.win = True
+            return True
             
-
-
+    if (hand1.win == False):
+        hand2.win = True
+        return True
     
     
 def main():
@@ -312,8 +328,8 @@ def main():
 
     handRanking(hand2)
 
-    print("Test!    Straight Flush: ", hand1.SF, "Flush:", hand1.FL, "Pair:", hand1.P, "Three of:", hand1.TK, "Straight:", hand1.S)
-    print("Test!    Straight Flush: ", hand1.SF, "Flush:", hand2.FL, "Pair:", hand2.P, "Three of:", hand2.TK, "Straight:", hand2.S)
+    print("Test!    Straight Flush: ", hand1.SF, ", Flush:", hand1.FL, ", Pair:", hand1.P, ", Three of:", hand1.TK, ", Straight:", hand1.S)
+    print("Test!    Straight Flush: ", hand1.SF, ", Flush:", hand2.FL, ", Pair:", hand2.P, ", Three of:", hand2.TK, ", Straight:", hand2.S)
 
 
     determineWinner(hand1, hand2)
