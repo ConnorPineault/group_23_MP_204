@@ -339,14 +339,32 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
 
 
 
-#THIS FUNCTION DETERMINES WHICH HAND IS BETTER
+#THIS FUNCTION DETERMINES WHICH HAND IS BETTER      STILL NEED TO ADD TIES!!!
 def determineWinner(hand1, hand2):
 
     #USER HAS A STRAIGHT FLUSH, DEALER DOES NOT
-    hand1.win = (hand1.SF & ~hand2.SF)
+    hand1.win = hand1.SF and not hand2.SF
     
     #USER HAS THREE OF A KIND
-    hand1.win = (hand1.T & ~hand2.SF & ~hand2.T)
+    hand1.win = (hand1.TK and not hand2.SF and not hand2.TK)
+
+    #USER HAS A STRAIGHT
+    hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S)
+
+    #USER HAS A PAIR
+    hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P)
+
+    cards1 = hand1.cards
+    cards2 = hand2.cards
+    hc1 = cards1[2]
+    hc2 = cards2[2]
+
+    #USER HAS A HIGH CARD
+    if (hand1.HC & hand1.HC):
+        if (hc1 > hc2):
+            hand1.win = (hand1.HC & hand1.HC)
+        else:
+            hand2.win
             
 
 
@@ -370,6 +388,12 @@ def main():
     handRanking(hand2)
 
     print("Test!    Flush:", hand1.FL, "Pair:", hand1.P, "Three of:", hand1.TK, "Straight:", hand1.S)
+    print("Test!    Flush:", hand2.FL, "Pair:", hand2.P, "Three of:", hand2.TK, "Straight:", hand2.S)
+
+
+    determineWinner(hand1, hand2)
+    print("Hand1: ", hand1.win)
+    print("Hand2: ", hand2.win)
     
 
 
