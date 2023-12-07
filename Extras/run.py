@@ -550,17 +550,9 @@ def main():
     playAgain = True
 
     while(playAgain == True):
+    #while(totalGames < 1000):
 
-        # order should go as follows: 
-
-        # user sees cards. 
-        # user sees table cards
-        # play or fold function runs. 
-        # user decides 
-        # user sees dealers cards
-        # win determined
-        # result shown
-
+        
         totalGames += 1
 
         deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]

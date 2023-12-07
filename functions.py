@@ -27,11 +27,17 @@ def dealCards(deck):
 
 def example_theory():
 
-    pass
 
 
 
-""" FUNCTION: HANDRANKING
+
+
+
+    
+
+
+
+    """ FUNCTION: HANDRANKING
     PARAMETER: HAND (FOUND IN MAIN)
     RETURNS: TRUE (FOR FOUND RANK)
     """
