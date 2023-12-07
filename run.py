@@ -82,8 +82,7 @@ class Hand:
         self.HCC = False    #Compares high card with high card of other deck
         self.win = False
         #Hand recommendations
-        self.SP = False
-        self.MP = False
+        self.RP = False     #Recommend play or fold the hand
         self.HCR = 0    #Variable to keep track of rank of high card of hand (no shared)
         self.rank = ""
 
@@ -312,16 +311,16 @@ def handRanking(hand):
     """
 def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
 
-    hand.SP = not hand.HC
-    if (hand.SP):
+    hand.RP = not hand.HC
+    if (hand.RP):
         return True
     
-    hand.MP = ((not hand.SP) and (hand.HCR == 11 or hand.HCR == 12 or hand.HCR == 13 or hand.HCR == 14))
-    if(hand.MP):
-        return True
+    #hand.MP = ((not hand.SP) and (hand.HCR == 11 or hand.HCR == 12 or hand.HCR == 13 or hand.HCR == 14))
+   # if(hand.MP):
+   #     return True
     
-    hand.WP = (not hand.SP and not hand.MP)
-    if(hand.WP):
+    hand.RP = (not hand.SF and not hand.FL and not hand.TK and not hand.S and not hand.TP and not hand.P)
+    if(not hand.RP):
         return True
     
     
@@ -535,8 +534,9 @@ def determineWinner(hand1, hand2):
 
 def main():
 
-    correctDecisions = 0
-    incorrectDecisions = 0 
+    userCorrect = 0
+    totalGames = 0 
+    modelCorrect = 0
     playAgain = True
 
     while(playAgain == True):
@@ -550,6 +550,8 @@ def main():
         # user sees dealers cards
         # win determined
         # result shown
+
+        totalGames += 1
 
         deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
         shared_cards = dealCards(deck)
@@ -577,14 +579,12 @@ def main():
         print("You have a:", hand1.rank)
         playOrFold(hand1)
 
-        if (hand1.SP):
-            print("Recommendation: strong play")
+        if (hand1.RP):
+            print("Recommendation: Play")
 
-        elif (hand1.MP):
-         print("Recommendation: moderate play")
+        elif (not hand1.RP):
+         print("Recommendation: Fold")
 
-        elif (hand1.WP):
-            print("Recommendation: weak play")
 
         playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
         while ((playDecision != 'P') and (playDecision != 'F')):
@@ -595,30 +595,45 @@ def main():
 
         determineWinner(hand1,hand2)
 
-
-        if ((hand1.win == True) and (playDecision == 'P')):
-            print("The user wins the round and the dealer loses!")
-            print('You made the right decision :)')
-            correctDecisions += 1
-        elif ((hand1.win == False) and (playDecision == 'P')):
-            print("The user loses the round and the dealer wins!")
-            print("You made the wrong decision :(")
-            incorrectDecisions += 1
-        elif((hand1.win == True) and (playDecision == "F")):
-            print("You folded so the dealer won, if you played you would have won!")
-            print("You made the wrong decision :(")
-            incorrectDecisions += 1
+        print()
+        print("Your decision:")
+        if (hand1.win == True and playDecision == "P"):
+            print("You decided to play and you won the round")
+            userCorrect += 1
+        elif ((hand1.win == False) and (hand1.RP)):
+            print("You decided to play and you lost the round")
+        elif ((hand1.win == True) and (not hand1.RP)):
+            print("You decided to fold, but you would have won the round")
         else:
-            print("You folded so the dealer won, if you played you would have lost!")
-            print("You made the right decision :(")
-            correctDecisions += 1
+            print("You decided to fold, and would have lost the round")
+            userCorrect += 1
+
+        print()
+        print("Our model:")
+        if ((hand1.win == True) and (hand1.RP)):
+            print("We recommended to play, the user won!")
+            print('Our model made the right decision :)')
+            modelCorrect += 1
+        elif ((hand1.win == False) and (hand1.RP)):
+            print("We recommended to play, the user lost!")
+            print("Our model made the wrong decision :(")
+        elif((hand1.win == True) and (not hand1.RP)):
+            print("We recommended to fold, but your hand would have won.")
+            print("Our model made the wrong decision :(")
+        else:
+            print("We recommended to fold, if you played you would have lost!")
+            print("Our model made the right decision :)")
+            modelCorrect += 1
         
         print()
-        totalGames = correctDecisions + incorrectDecisions
-        print("You have played ", totalGames, "games")
-        accuracy = correctDecisions / totalGames
+        #totalGames = correctDecisions + incorrectDecisions
+        print("You have played", totalGames, "games")
+        userAccuracy = userCorrect / totalGames
+        modelAccuracy = modelCorrect / totalGames
 
-        print("Your accuracy is", accuracy, "%")
+        print("Your accuracy is", userAccuracy, "%")
+        print("Our models accuracy is", modelAccuracy, "%")
+
         print()
         qplay = (input("Enter 'y' to play again, any other key to exit: "))
         if (qplay == 'y'):
