@@ -589,6 +589,7 @@ def main():
     modelCorrect = 0
     playAgain = True
 
+
     while(playAgain == True):
 
         # order should go as follows: 
@@ -685,7 +686,7 @@ def main():
         print("Your decision accuracy is", round(userAccuracy, 2), "%")
         print("Our models decision accuracy is", round(modelAccuracy, 2), "%")
         print()
-        qplay = (input("Enter 'y' to play again, any other key to exit: "))
+        qplay = (input("Enter 'y' to play again, any other key to enter the model testing mode: "))
         if (qplay == 'y'):
             print()
             print()
