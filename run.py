@@ -561,7 +561,6 @@ def main():
 
     print("TABLE CARDS", shared_cards)
     
-    print("Your hand is: ", hand1.cards)
     playOrFold(hand1)
 
     if (hand1.SP):
@@ -580,12 +579,14 @@ def main():
     
     print("The dealer had: ", hand2.cards)
     #print("Dealer Cards: ",cards2)
+    print("User", handRanking(hand1))
     handRanking(hand1)
+    print("Dealer")
     handRanking(hand2)
 
     determineWinner(hand1,hand2)
 
-    if hand1.win == True:
+    if ((hand1.win == True) and (playDecision == 'P')):
         print("USER: WIN")
         print('DEALER: LOSE')
     else:
