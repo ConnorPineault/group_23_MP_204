@@ -81,6 +81,10 @@ class Hand:
         self.HC = False
         self.HCC = False    #Compares high card with high card of other deck
         self.win = False
+        #Hand recommendations
+        self.SP = False
+        self.MP = False
+        self.HCR = 0    #Variable to keep track of rank of high card of hand (no shared)
         
 
 
@@ -182,6 +186,9 @@ def handRanking(hand):
     # Add a constraint that at least one of the straight conditions must be met
     # Bauhaus encoding means that sum checks through each proposition in the list
     # So if one proposition in list is correct it returns as true
+
+    hand.HCR = hand.cards[2].number
+
     cards = hand.cards + hand.shared_cards
     cards.sort(key=lambda card: (card.number, card.suit))
     #print(cards)
@@ -268,7 +275,7 @@ def handRanking(hand):
         not hand.SF and not hand.TK and not hand.S and not hand.FL and not hand.TP and not hand.P
     ]
     if any(HC):
-        print("high card", cards[4].number)
+        print("high card", hand.HCR)
         hand.HC = True
         return True
 
@@ -294,8 +301,25 @@ def handRanking(hand):
     PARAMETER: HAND (FOUND IN MAIN)
     RETURNS: ...
     """
-def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
+def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
 
+    hand.SP = not hand.HC
+    if (hand.SP):
+        return True
+    
+    hand.MP = ((not hand.SF or not hand.TK or not hand.S or not hand.FL or not hand.TP or not hand.P) and 
+    (hand.HCR == 11 or hand.HCR == 12 or hand.HCR == 13 or hand.HCR == 14))
+    if(hand.MP):
+        return True
+    
+    hand.WP = (not hand.SP and not hand.MP)
+    if(hand.WP):
+        return True
+    
+    
+    
+    
+    """"
     # High card is Ace or King for user
     for suit in SUITS:
         E.add_constraint(Card(14, suit) | Card(13, suit))
@@ -334,7 +358,7 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
     E.add_constraint(sum(q64_conditions))
 
     return E
-
+    """
 
 
 
@@ -362,11 +386,8 @@ def determineWinner(hand1, hand2):
     #HCC (High card comparator) will evaluate to true for the hand with the better high card
     cards1 = hand1.cards
     cards2 = hand2.cards
-    print(hand1.cards[2].number)
-    print(hand2.cards[2].number)
-    #hc1 = cards1[2]
-   # hc2 = cards2[2]
-    if (hand1.cards[2].number > hand2.cards[2].number):
+
+    if (hand1.HCR > hand2.HCR):
         hand1.HCC = True
     else:       
         hand2.HCC = True
@@ -517,11 +538,6 @@ def determineWinner(hand1, hand2):
 
 
 
-
-""" FUNCTION: DETERMINE WINNER
-    PARAMETER: HAND1, HAND2 (FOUND IN MAIN)
-    RETURNS: TRUE (FOR WINNING RANK)
-    """
 def main():
 
 
@@ -558,11 +574,28 @@ def main():
 
     print("TABLE CARDS", shared_cards)
     
-    print("Dealer Cards: ",cards2)
+    print("Your hand is: ", hand1.cards)
+    playOrFold(hand1)
+
+    if (hand1.SP):
+        print("Recommendation: strong play")
+
+    elif (hand1.MP):
+        print("Recommendation: moderate play")
+
+    elif (hand1.WP):
+        print("Recommendation: weak play")
+
+    playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
+    print(playDecision)
+    if ((playDecision != 'P') and (playDecision != 'F')):
+        playDecision = input("Enter 'P' to play, 'F' to fold: ")
+    
+    print("The dealer had: ", hand2.cards)
+    #print("Dealer Cards: ",cards2)
     handRanking(hand1)
     handRanking(hand2)
 
-    
     determineWinner(hand1,hand2)
     print("USER: ", hand1.win)
     print("DEALER: ", hand2.win)
