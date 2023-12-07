@@ -85,6 +85,8 @@ class Hand:
         self.SP = False
         self.MP = False
         self.HCR = 0    #Variable to keep track of rank of high card of hand (no shared)
+        self.rank = ""
+
         
 
 
@@ -202,8 +204,9 @@ def handRanking(hand):
             (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) & (cards[3].number == cards[4].number - 1) 
     ]
     if any(SF):
-        print('straight flush')
+       # print('straight flush')
         hand.SF = True
+        hand.rank = ("Straight flush")
         return True
     
 
@@ -217,8 +220,9 @@ def handRanking(hand):
     ]
 
     if any(TK):
-        print('three of a kind')
+      #  print('three of a kind')
         hand.TK = True
+        hand.rank = "Three of a kind"
         return True
 
 
@@ -229,8 +233,9 @@ def handRanking(hand):
     ]
 
     if any(S):
-        print('straight')
+      #  print('straight')
         hand.S = True
+        hand.rank = "Straight"
         return True
 
 #FLUSH
@@ -239,8 +244,9 @@ def handRanking(hand):
      ]
 
     if any(FL):
-        print('flush')
+       # print('flush')
         hand.FL = True
+        hand.rank = "Flush"
         return True
 
 
@@ -253,8 +259,9 @@ def handRanking(hand):
     ]
 
     if any(TP):
-        print('two pair')
+       # print('two pair')
         hand.TP = True
+        hand.rank = "Two pair"
         return True
 
 
@@ -266,8 +273,9 @@ def handRanking(hand):
      (cards[2].number == cards[3].number) | (cards[3].number == cards[4].number))
     ]
     if any(P):
-        print('pair')
+       # print('pair')
         hand.P = True
+        hand.rank = "Pair"
         return True
     
 #High card
@@ -275,8 +283,9 @@ def handRanking(hand):
         not hand.SF and not hand.TK and not hand.S and not hand.FL and not hand.TP and not hand.P
     ]
     if any(HC):
-        print("high card", hand.HCR)
+        #print("high card", hand.HCR)
         hand.HC = True
+        hand.rank = ("high card of" + str(hand.HCR))
         return True
 
     
@@ -307,8 +316,7 @@ def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
     if (hand.SP):
         return True
     
-    hand.MP = ((not hand.SF or not hand.TK or not hand.S or not hand.FL or not hand.TP or not hand.P) and 
-    (hand.HCR == 11 or hand.HCR == 12 or hand.HCR == 13 or hand.HCR == 14))
+    hand.MP = ((not hand.SP) and (hand.HCR == 11 or hand.HCR == 12 or hand.HCR == 13 or hand.HCR == 14))
     if(hand.MP):
         return True
     
@@ -561,6 +569,10 @@ def main():
 
     print("TABLE CARDS", shared_cards)
     
+    handRanking(hand1)
+    handRanking(hand2)
+
+    print("You have a:", hand1.rank)
     playOrFold(hand1)
 
     if (hand1.SP):
@@ -577,21 +589,27 @@ def main():
     if ((playDecision != 'P') and (playDecision != 'F')):
         playDecision = input("Enter 'P' to play, 'F' to fold: ")
     
-    print("The dealer had: ", hand2.cards)
+    print("The dealer had: ", hand2.cards, "which results in a", hand2.rank)
     #print("Dealer Cards: ",cards2)
-    print("User", handRanking(hand1))
-    handRanking(hand1)
-    print("Dealer")
-    handRanking(hand2)
+   # print("User", handRanking(hand1))
+   # handRanking(hand1)
+   # print("Dealer")
+   # handRanking(hand2)
 
     determineWinner(hand1,hand2)
 
     if ((hand1.win == True) and (playDecision == 'P')):
-        print("USER: WIN")
-        print('DEALER: LOSE')
+        print("The user wins the round and the dealer loses!")
+        print('You made the right decision :)')
+    elif ((hand1.win == False) and (playDecision == 'P')):
+        print("The user loses the round and the dealer wins!")
+        print("You made the wrong decision :(")
+    elif((hand1.win == True) and (playDecision == "F")):
+        print("You folded so the dealer won, if you played you would have won!")
+        print("You made the wrong decision :(")
     else:
-        print("USER: LOSE")
-        print("DEALER: WIN")
+        print("You folded so the dealer won, if you played you would have lost!")
+        print("You made the right decision :(")
         
 
 
