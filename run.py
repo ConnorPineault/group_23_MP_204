@@ -585,9 +585,8 @@ def main():
         print("Recommendation: weak play")
 
     playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
-    print(playDecision)
-    if ((playDecision != 'P') and (playDecision != 'F')):
-        playDecision = input("Enter 'P' to play, 'F' to fold: ")
+    while ((playDecision != 'P') and (playDecision != 'F')):
+        playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
     
     print("The dealer had: ", hand2.cards, "which results in a", hand2.rank)
     #print("Dealer Cards: ",cards2)
