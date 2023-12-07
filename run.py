@@ -59,6 +59,8 @@ class Card:
     def __repr__(self):
         return f"{self.number}.{self.suit}" 
     
+
+
 """ CLASS: HAND
     ATTRIBUTES: CARDS, SHARED_CARDS, HAND RANKS
     METHODS: N/A
@@ -77,6 +79,7 @@ class Hand:
         self.P = False
         self.TP = False
         self.HC = False
+        self.HCC = False    #Compares high card with high card of other deck
         self.win = False
         
 
@@ -260,6 +263,16 @@ def handRanking(hand):
         hand.P = True
         return True
     
+#High card
+    HC = [
+        not hand.SF and not hand.TK and not hand.S and not hand.FL and not hand.TP and not hand.P
+    ]
+    if any(HC):
+        print("high card", cards[4].number)
+        hand.HC = True
+        return True
+
+    
 
 
 
@@ -344,10 +357,20 @@ def playOrFold(): ##PLAY OR FOLD RECOMMENDATIONS
     PARAMETER: HAND1, HAND2 (FOUND IN MAIN)
     RETURNS: TRUE (FOR WINNING RANK)
     """    
-#  STILL NEED TO ADD TIES!!!
 def determineWinner(hand1, hand2):
 
-
+    #HCC (High card comparator) will evaluate to true for the hand with the better high card
+    cards1 = hand1.cards
+    cards2 = hand2.cards
+    print(hand1.cards[2].number)
+    print(hand2.cards[2].number)
+    #hc1 = cards1[2]
+   # hc2 = cards2[2]
+    if (hand1.cards[2].number > hand2.cards[2].number):
+        hand1.HCC = True
+    else:       
+        hand2.HCC = True
+        
 
 
     #USER HAS A STRAIGHT FLUSH, DEALER DOES NOT
@@ -355,43 +378,75 @@ def determineWinner(hand1, hand2):
     if (win):
         hand1.win = True
         return True
-
     
-    hand1.win = hand1.SF and not hand2.SF  
+    #USER AND DEALER HAVE A STRAIGHT FLUSH
+    win = (hand1.SF and hand2.SF and hand1.HCC)
+    if (win):
+        hand1.win = True
+        return True
+        
+    
+    #hand1.win = hand1.SF and not hand2.SF  
    
     #USER HAS THREE OF A KIND
     win = (hand1.TK and not hand2.SF and not hand2.TK)
     if (win):
         hand1.win = True
         return True
+  
+    #USER AND DEALER HAVE THREE OF A KIND
+    win = (hand1.TK and hand2.TK and hand1.HCC)
+    if (win):
+        hand1.win = True
+        return True
+  
+
+
+    #USER HAS A STRAIGHT
+    win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S)
+    if (win):
+        hand1.win = True
+        return True
+    
+    #USER AND DEALER HAVE A STRAIGHT
+    win = (hand1.S and hand2.S and hand1.HCC)
+    if (win):
+        hand1.win = True
+        return True
+
+
+
     #USER HAS FLUSH
     win = (hand1.FL and not hand2.SF and not hand2.TK)
     if (win):
         hand1.win = True
         return True
 
-    
-
-
-
-    #USER HAS A STRAIGHT
-    win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S)
-    win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.FL)
+    #USER AND DEALER HAVE A FLUSH
+    win = (hand1.FL and hand2.FL and hand1.HCC)
     if (win):
         hand1.win = True
         return True
-
+    
 
     #USER HAS 2-PAIR    
     win = (hand1.TP and not hand2.SF and not hand2.TK and not hand2.S and not hand2.FL and not hand2.TP)
     if (win):
         hand1.win = True
         return True
-    hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S) 
+    #hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S) 
 
+    #BOTH PLAYERS HAVE A 2 PAIR
+    win = (hand1.TP and hand2.TP and hand1.HCC)
+    if (win):
+        hand1.win = True
+        return True
+   
+   
     #USER HAS A PAIR
-    hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P) 
+    #hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P) 
 
+    """"
     cards1 = hand1.cards
     cards2 = hand2.cards
     hc1 = cards1[2]
@@ -402,7 +457,7 @@ def determineWinner(hand1, hand2):
         if (hc1 > hc2):
             hand1.win = True
             return True
-
+    """
 
     #USER HAS A PAIR
     win = (hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
@@ -410,28 +465,46 @@ def determineWinner(hand1, hand2):
         hand1.win = True
         return True
     
-    #HIGH CARD
-    HC = (not hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
-    if (HC):
-        hand1.HC = True #setting hand HC to true 
-        cards1 = hand1.cards
-        cards2 = hand2.cards
-        hc1 = cards1[2]
-        hc2 = cards2[2]
-        print(hc1)
-        print(hc2)
-        if (hand1.cards[2].number > hand2.cards[2].number):
-                hand1.win = True
-                return True
-        else:
-                hand2.win = True
-                return True
+    #BOTH PLAYERS HAVE A PAIR
+    win = (hand1.P and hand2.P and hand1.HCC)
+    if (win):
+        hand1.win = True
+        return True
+    
+    #HIGH CARD AND FIRST PLAYER HAS BETTER HIGHCARD
+    win = (hand1.HC and hand2.HC and hand1.HCC)
+    if (win):
+        hand1.win = True
+        return True
+    
+    #HIGH CARD AND SECOND PLAYER HAS BETTER HIGHCARD
+    win = (hand1.HC and hand2.HC and not hand1.HCC)
+    if (win):
+        hand1.win = False
+
+
+    #HC = (not hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
+    #if (HC):
+    #    hand1.HC = True #setting hand HC to true 
+    #    cards1 = hand1.cards
+    #    cards2 = hand2.cards
+    #    hc1 = cards1[2]
+    #    hc2 = cards2[2]
+    #    print(hc1)
+    #    print(hc2)
+    #    if (hand1.cards[2].number > hand2.cards[2].number):
+    #            hand1.win = True
+    #            return True
+    #    else:
+    #           hand2.win = True
+    #            return True
+
+
+    #If the first player does not win, then this implies that the second player wins
     if (hand1.win == False):
         hand2.win = True
         return True
-
-
-
+    
 
 
 
