@@ -371,6 +371,7 @@ def determineWinner(hand1, hand2):
     #HIGH CARD
     HC = (not hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
     if (HC):
+        hand1.HC = True #setting hand HC to true 
         cards1 = hand1.cards
         cards2 = hand2.cards
         hc1 = cards1[2]
