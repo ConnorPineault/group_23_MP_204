@@ -319,13 +319,32 @@ def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
     if(not hand.RP):
         return True
     
-    
+
+
+""" FUNCTION: PLAY OR FOLD 2
+    PARAMETER: HAND (FOUND IN MAIN)
+    RETURNS: ...
+    """
+def playOrFold2(hand): ##PLAY OR FOLD RECOMMENDATIONS
+
+    hand.RP = ((not hand.HC) and (hand.HCR == 14 or hand.HCR == 13
+                or hand.HCR == 12 or hand.HCR == 11 or hand.HCR == 10
+                or hand.HCR == 9 or hand.HCR == 8 or hand.HCR == 7
+                or hand.HCR == 6 or hand.HCR == 5))
+   
+    if (hand.RP):
+        return True
+    else:
+        hand.RP = False
+        return True
+
+
     
    
 """" FUNCTION: MODEL ACCURACY TESTER
      PARAMETER: 
 """
-def modelAccuracyTester():
+def modelAccuracyTester(modelChoice):
     userCorrect = 0
     totalGames = 0 
     modelCorrect = 0
@@ -363,8 +382,12 @@ def modelAccuracyTester():
         handRanking(hand2)
 
      
-        playOrFold(hand1)
-
+        if (modelChoice == 1):
+            playOrFold(hand1)
+        elif (modelChoice == 2):
+            playOrFold2(hand1)
+        else:
+            playOrFold3(hand1)
 
         determineWinner(hand1,hand2)
 
@@ -584,6 +607,7 @@ def main():
     
         handRanking(hand1)
         handRanking(hand2)
+        
 
         print("You have a:", hand1.rank)
         playOrFold(hand1)
@@ -654,8 +678,22 @@ def main():
     #print("USER: ", hand1.win)
     #print("DEALER: ", hand2.win)
 
+    modelTest = True
+    while (modelTest == True):
+        print("1. is the pair plus model")
+        print("2 is the pair plus and high card 5 or more model")
+        print("3 is the pair plus and high card 5 or more and avoid dangerous shared cards model")
+        modelNum = 0 
+        while (modelNum != 1 and modelNum != 2 and modelNum != 3):
+            modelNum = int(input("What model would you like to test (Enter 1, 2, or 3): "))
+   
+        modelAccuracyTester(modelNum)
 
-    modelAccuracyTester()
+        testAgain = input("Enter 'y' to test again, any other key to exit: ").upper()
+        if (testAgain == "Y"):
+            modelTest = True
+        else:
+            modelTest = False
 
 
 
