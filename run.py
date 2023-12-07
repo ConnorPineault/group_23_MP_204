@@ -564,8 +564,8 @@ def main():
 
 
 
-    print("User Cards: ", cards1)
-    # playOrFold()
+        print("User Cards: ", cards1)
+        # playOrFold()
 
 
 
@@ -618,7 +618,7 @@ def main():
         print("You have played ", totalGames, "games")
         accuracy = correctDecisions / totalGames
 
-        print("Your accuracy is", accuracy, "%")
+        print("Your accuracy is", round(accuracy, 2), "%")
         print()
         qplay = (input("Enter 'y' to play again, any other key to exit: "))
         if (qplay == 'y'):
