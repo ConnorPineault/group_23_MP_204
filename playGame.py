@@ -20,7 +20,7 @@ def main():
     playAgain = True
 
     while(playAgain == True):
-        
+        count = 0
         # order should go as follows: 
 
         # user sees cards. 
