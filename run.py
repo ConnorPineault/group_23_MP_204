@@ -92,14 +92,38 @@ class Hand:
 
 """CONSTRAINTS"""
 ###    @constraint.at_least_one(E)
-###    @proposition(E)
 
 
 
-
-
-
-
+"""PROPOSITIONS"""
+@proposition(E)
+class SF:
+    def __init__(self):
+        pass
+@proposition(E)
+class TK:
+    def __init__(self):
+        pass
+@proposition(E)
+class S:
+    def __init__(self):
+        pass 
+@proposition(E)
+class FL:
+    def __init__(self):
+         pass
+@proposition(E)
+class TP:
+    def __init__(self):
+         pass
+@proposition(E)
+class P:
+    def __init__(self):
+        pass 
+@proposition(E)
+class HC:
+    def __init__(self):
+        pass
 
 
 
