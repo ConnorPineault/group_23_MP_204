@@ -338,7 +338,25 @@ def playOrFold2(hand): ##PLAY OR FOLD RECOMMENDATIONS
         hand.RP = False
         return True
 
+""" FUNCTION: PLAY OR FOLD
+    PARAMETER: HAND (FOUND IN MAIN)
+    RETURNS: ...
+    """
+def playOrFold3(hand, shared_cards): ##PLAY OR FOLD RECOMMENDATIONS
 
+    hc5OrHigher = (hand.HCR == 14 or hand.HCR == 13 or hand.HCR == 12 or hand.HCR == 11 or hand.HCR == 10 or hand.HCR == 9 or hand.HCR == 8 or hand.HCR == 7 or hand.HCR == 6 or hand.HCR == 5)
+    sharedDangerTK = shared_cards[0].number == shared_cards[1].number and not hand.TK
+    sharedDangerS = (shared_cards[0].number == shared_cards[1].number + 1) and not hand.S             
+    sharedDangerFL = (shared_cards[0].suit == shared_cards[1].suit) and not hand.FL
+
+    hand.RP = (not hand.HC) and (hc5OrHigher) and (not sharedDangerTK or not hand.P) and (not sharedDangerS or not hand.P) and (not sharedDangerFL or not hand.P)
+
+    if (hand.RP):
+        return True
+    else:
+        hand.RP = False
+        return True
+    
     
    
 """" FUNCTION: MODEL ACCURACY TESTER
@@ -387,7 +405,7 @@ def modelAccuracyTester(modelChoice):
         elif (modelChoice == 2):
             playOrFold2(hand1)
         else:
-            playOrFold3(hand1)
+            playOrFold3(hand1, shared_cards)
 
         determineWinner(hand1,hand2)
 
