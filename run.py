@@ -380,7 +380,10 @@ def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
 """ FUNCTION: DETERMINE WINNER
     PARAMETER: HAND1, HAND2 (FOUND IN MAIN)
     RETURNS: TRUE (FOR WINNING RANK)
-    """    
+    """   
+
+
+
 def determineWinner(hand1, hand2):
 
     #HCC (High card comparator) will evaluate to true for the hand with the better high card
@@ -393,7 +396,7 @@ def determineWinner(hand1, hand2):
         hand2.HCC = True
         
 
-
+    
     #USER HAS A STRAIGHT FLUSH, DEALER DOES NOT
     win = (hand1.SF and not hand2.SF)
     if (win):
@@ -463,22 +466,6 @@ def determineWinner(hand1, hand2):
         hand1.win = True
         return True
    
-   
-    #USER HAS A PAIR
-    #hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P) 
-
-    """"
-    cards1 = hand1.cards
-    cards2 = hand2.cards
-    hc1 = cards1[2]
-    hc2 = cards2[2]
-
-    #USER HAS A HIGH CARD
-    if (hand1.HC & hand2.HC):
-        if (hc1 > hc2):
-            hand1.win = True
-            return True
-    """
 
     #USER HAS A PAIR
     win = (hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
@@ -597,8 +584,18 @@ def main():
     handRanking(hand2)
 
     determineWinner(hand1,hand2)
-    print("USER: ", hand1.win)
-    print("DEALER: ", hand2.win)
+
+    if hand1.win == True:
+        print("USER: WIN")
+        print('DEALER: LOSE')
+    else:
+        print("USER: LOSE")
+        print("DEALER: WIN")
+        
+
+
+    #print("USER: ", hand1.win)
+    #print("DEALER: ", hand2.win)
 
 
 
