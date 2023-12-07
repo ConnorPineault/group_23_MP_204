@@ -10,7 +10,7 @@ FORMULAE
 IS
 SEQ ("contra (classical)"[A\3]) (cut[B,C\0,0]) ("¬ elim"[B\2]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
 END
-CONJECTUREPANEL Quiz
+CONJECTUREPANEL Proofs
 PROOF "P→¬R, Q→¬R ⊢ (P∧Q)→¬R"
 INFER P→¬R,
      Q→¬R 
@@ -25,7 +25,7 @@ FORMULAE
 IS
 SEQ ("→ intro"[A,B\3,0]) (cut[B,C\4,0]) (LAYOUT "∧ elim" (0) ("∧ elim(R)"[A,B\1,4]) (hyp[A\3])) (cut[B,C\1,0]) (LAYOUT "∧ elim" (0) ("∧ elim(L)"[A,B\1,4]) (hyp[A\3])) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
 END
-CONJECTUREPANEL Quiz
+CONJECTUREPANEL Proofs
 PROOF "E→P, G→¬P, (F∧S)→P ⊢ (E∨(F∧S))→P"
 INFER E→P,
      G→¬P,
@@ -58,24 +58,6 @@ FORMULAE
 IS
 SEQ ("→ intro"[A,B\1,5]) ("¬ intro"[A\3]) (cut[B,C\2,0]) ("→ elim"[A,B\3,2]) (hyp[A\4]) (hyp[A\3]) (cut[B,C\0,0]) ("¬ elim"[B\2]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
 END
-CONJECTUREPANEL Conjectures
-PROOF "(P∧E)→¬G, (F∧T)→¬G ⊢ (P∧E)∨(F∧T)→¬G"
-INFER (P∧E)→¬G,
-     (F∧T)→¬G 
-     ⊢ (P∧E)∨(F∧T)→¬G 
-FORMULAE
-0 ¬G,
-1 F∧T,
-2 F∧T→¬G,
-3 P∧E,
-4 P∧E→¬G,
-5 P∧E∨F∧T,
-6 (P∧E)∨(F∧T),
-7 (F∧T)→¬G,
-8 (P∧E)→¬G 
-IS
-SEQ ("→ intro"[A,B\6,0]) ("∨ elim"[A,B,C\3,1,0]) (hyp[A\5]) (cut[B,C\0,0]) ("→ elim"[A,B\3,0]) (hyp[A\4]) (hyp[A\3]) (hyp[A\0]) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
-END
 CONJECTUREPANEL Theorems
 PROOF "P→Q, ¬Q ⊢ ¬P"
 INFER P→Q,
@@ -89,32 +71,6 @@ FORMULAE
 4 P→Q 
 IS
 SEQ ("¬ intro"[A\3]) (cut[B,C\2,0]) ("→ elim"[A,B\3,2]) (hyp[A\4]) (hyp[A\3]) (cut[B,C\0,0]) ("¬ elim"[B\2]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
-END
-CONJECTUREPANEL Conjectures
-PROOF "E→P, G→¬P, (F∨S)→P, Q→(S∨¬S) ⊢ (E∨F∨(Q∧S))→P"
-INFER E→P,
-     G→¬P,
-     (F∨S)→P,
-     Q→(S∨¬S)
-     ⊢ (E∨F∨(Q∧S))→P 
-FORMULAE
-0 P,
-1 F∨S,
-2 F∨S→P,
-3 S,
-4 F,
-5 Q∧S,
-6 Q,
-7 E,
-8 E→P,
-9 E∨F,
-10 E∨F∨Q∧S,
-11 E∨F∨(Q∧S),
-12 Q→(S∨¬S),
-13 (F∨S)→P,
-14 G→¬P 
-IS
-SEQ ("→ intro"[A,B\11,0]) ("∨ elim"[A,B,C\9,5,0]) (hyp[A\10]) ("∨ elim"[A,B,C\7,4,0]) (hyp[A\9]) (cut[B,C\0,0]) ("→ elim"[A,B\7,0]) (hyp[A\8]) (hyp[A\7]) (hyp[A\0]) (cut[B,C\1,0]) (LAYOUT "∨ intro" (0) ("∨ intro(L)"[B,A\3,4]) (hyp[A\4])) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0]) (cut[B,C\3,0]) (LAYOUT "∧ elim" (0) ("∧ elim(R)"[A,B\6,3]) (hyp[A\5])) (cut[B,C\1,0]) (LAYOUT "∨ intro" (0) ("∨ intro(R)"[B,A\4,3]) (hyp[A\3])) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
 END
 CONJECTUREPANEL Theorems
 PROOF "P∨¬P"
@@ -140,7 +96,7 @@ FORMULAE
 IS
 SEQ ("¬ intro"[A\1]) (cut[B,C\0,0]) ("¬ elim"[B\2]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
 END
-CONJECTUREPANEL Quiz
+CONJECTUREPANEL Proofs
 PROOF "E→G, F→G, G→(S∨R) ⊢ (E∨F)→(S∨R)"
 INFER E→G,
      F→G,
@@ -159,8 +115,8 @@ FORMULAE
 IS
 SEQ ("→ intro"[A,B\7,0]) ("∨ elim"[A,B,C\5,3,0]) (hyp[A\7]) (cut[B,C\1,0]) ("→ elim"[A,B\5,1]) (hyp[A\6]) (hyp[A\5]) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0]) (cut[B,C\1,0]) ("→ elim"[A,B\3,1]) (hyp[A\4]) (hyp[A\3]) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
 END
-CONJECTUREPANEL Quiz
-CURRENTPROOF "E→P, G→¬P, (F∧S)→P ⊢ (E∨(F∧S))→P"
+CONJECTUREPANEL Proofs
+PROOF "E→P, G→¬P, (F∧S)→P ⊢ (E∨(F∧S))→P"
 INFER E→P,
      G→¬P,
      (F∧S)→P 
