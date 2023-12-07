@@ -567,11 +567,11 @@ def main():
         print()
         print("Our model:")
         if ((hand1.win == True) and (hand1.RP)):
-            print("We recommended to play, the user won!")
+            print("We recommended to play, the user would have won!")
             print('Our model made the right decision :)')
             modelCorrect += 1
         elif ((hand1.win == False) and (hand1.RP)):
-            print("We recommended to play, the user lost!")
+            print("We recommended to play, the user would have lost!")
             print("Our model made the wrong decision :(")
         elif((hand1.win == True) and (not hand1.RP)):
             print("We recommended to fold, but your hand would have won.")
@@ -587,7 +587,8 @@ def main():
         userAccuracy = userCorrect / totalGames
         modelAccuracy = modelCorrect / totalGames
 
-        print("Your accuracy is", accuracy, "%")
+        print("Your accuracy is", userAccuracy, "%")
+        print("Our models accuracy is", modelAccuracy)
         print()
         qplay = (input("Enter 'y' to play again, any other key to exit: "))
         if (qplay == 'y'):
