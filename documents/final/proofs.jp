@@ -11,24 +11,6 @@ IS
 SEQ ("contra (classical)"[A\3]) (cut[B,C\0,0]) ("¬ elim"[B\2]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
 END
 CONJECTUREPANEL Quiz
-PROOF "G→T, S→¬T ⊢ G→¬S"
-INFER G→T,
-     S→¬T 
-     ⊢ G→¬S 
-FORMULAE
-0 ⊥,
-1 ¬T,
-2 T,
-3 S,
-4 S→¬T,
-5 ¬S,
-6 G,
-7 G→T,
-8 ¬¬S 
-IS
-SEQ ("→ intro"[A,B\6,5]) (cut[B,C\2,5]) ("→ elim"[A,B\6,2]) (hyp[A\7]) (hyp[A\6]) ("contra (classical)"[A\5]) (cut[B,C\3,0]) ("¬¬P ⊢ P"[P\3]) (cut[B,C\1,0]) ("→ elim"[A,B\3,1]) (hyp[A\4]) (hyp[A\3]) (cut[B,C\0,0]) ("¬ elim"[B\2]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
-END
-CONJECTUREPANEL Quiz
 PROOF "P→¬R, Q→¬R ⊢ (P∧Q)→¬R"
 INFER P→¬R,
      Q→¬R 
@@ -93,20 +75,6 @@ FORMULAE
 8 (P∧E)→¬G 
 IS
 SEQ ("→ intro"[A,B\6,0]) ("∨ elim"[A,B,C\3,1,0]) (hyp[A\5]) (cut[B,C\0,0]) ("→ elim"[A,B\3,0]) (hyp[A\4]) (hyp[A\3]) (hyp[A\0]) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
-END
-CONJECTUREPANEL Quiz
-PROOF "F→E, E→R ⊢ F→R"
-INFER F→E,
-     E→R 
-     ⊢ F→R 
-FORMULAE
-0 R,
-1 E,
-2 E→R,
-3 F,
-4 F→E 
-IS
-SEQ ("→ intro"[A,B\3,0]) (cut[B,C\1,0]) ("→ elim"[A,B\3,1]) (hyp[A\4]) (hyp[A\3]) (cut[B,C\0,0]) ("→ elim"[A,B\1,0]) (hyp[A\2]) (hyp[A\1]) (hyp[A\0])
 END
 CONJECTUREPANEL Theorems
 PROOF "P→Q, ¬Q ⊢ ¬P"
