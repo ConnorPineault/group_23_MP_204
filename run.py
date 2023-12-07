@@ -326,51 +326,7 @@ def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
     
     
     
-    
-    """"
-    # High card is Ace or King for user
-    for suit in SUITS:
-        E.add_constraint(Card(14, suit) | Card(13, suit))
-
-    #Hand is Queen-7 or better for user
-    for suit in SUITS:
-        for suit2 in SUITS:
-            #condition = (
-            E.add_constraint((Card(14, suit) | Card(13, suit) | Card(12, suit))
-                &
-                (Card(14, suit) | Card(13, suit) | Card(12, suit) |
-                Card(11, suit) | Card(10, suit) | Card(9, suit) |
-                Card(8, suit) | Card(7, suit)) 
-            )
-    q64_conditions.append(condition)
-    E.add_constraint(sum(q64_conditions))
-
-    # Hand is Queen-6-4 or better for user
-    q64_conditions = []
-    for suit1 in SUITS:
-        for suit2 in SUITS:
-            for suit3 in SUITS:
-                condition = (
-                Card(12, suit1) &  # Queen
-                (Card(6, suit2) | Card(7, suit2) | Card(8, suit2) |
-                    Card(9, suit2) | Card(10, suit2) | Card(11, suit2) |
-                    Card(12, suit2) | Card(13, suit2) | Card(14, suit2)) 
-                    &
-                (Card(4, suit3) | Card(5, suit3) | Card(6, suit3) |
-                    Card(7, suit3) | Card(8, suit3) | Card(9, suit3) |
-                    Card(10, suit3) | Card(11, suit3) | Card(12, suit3) |
-                    Card(13, suit3) | Card(14, suit3))
-                )
-
-                q64_conditions.append(condition)
-    E.add_constraint(sum(q64_conditions))
-
-    return E
-    """
-
-
-
-
+   
 
 
 
@@ -610,7 +566,7 @@ def main():
             incorrectDecisions += 1
         else:
             print("You folded so the dealer won, if you played you would have lost!")
-            print("You made the right decision :(")
+            print("You made the right decision :)")
             correctDecisions += 1
         
         print()
