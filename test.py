@@ -1,7 +1,7 @@
 
 import os, sys
 
-from run import example_theory
+from Extras.run import example_theory
 
 USAGE = '\n\tpython3 test.py [draft|final]\n'
 EXPECTED_VAR_MIN = 10
