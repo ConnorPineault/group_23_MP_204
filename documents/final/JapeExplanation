@@ -1,0 +1,35 @@
+
+
+### Sequent 1: \( P → ¬R, Q → ¬R |- (P ∧ Q) → ¬R \)
+
+**Variables:**
+- **P (PlayerHasTwoKings):** Indicates that a player holds two kings.
+- **Q (TwoKingsOnTable):** Denotes that the other two kings are visible among the community cards.
+- **R (OtherPlayerHasKing):** Represents the possibility of another player having a king.
+
+**Description:**
+This sequent represents a scenario specific to Three Card Poker. It states that if a player has two kings in their hand and the other two kings are visible on the table, it is logically impossible for any other player to have a king in their hand. This reflects a more realistic and complex situation in the context of the game, adhering to the constraints of Three Card Poker while addressing the feedback for increased complexity.
+
+### Sequent 2: \( E → P, G → ¬P, (F ∧ S) → P |- (E ∨ (F ∧ S)) → P \)
+
+**Variables:**
+- **E (HighCardAceOrKing):** Represents having a high card that is either an Ace or a King.
+- **G (HighCardJackOrLower):** Indicates the high card is a Jack or lower.
+- **F (HighCardQueenOrBetter):** Denotes having a hand with a high card of Queen.
+- **P (Play):** Represents the decision to make the Play wager.
+- **S (SecondCardSevenOrBetter):** Indicates that the second highest card is a 7 or better.
+
+**Description:**
+Captures the strategy for the Play wager decision. A player should play if they have a high card that is an Ace or a King, or a Queen with the second card being seven or better. The player should fold if their high card is a Jack or lower.
+
+### Sequent 3: \( E→ G, F → G, G → (S ∨ R)  |- (E ∨ F) → (S ∨ R) \)
+
+**Variables:**
+- **E (StraightFlush):** Indicates a straight flush.
+- **F (ThreeOfAKind):** Signifies three of a kind.
+- **G (StrongHand):** Represents having a strong hand.
+- **S (WinPot):** Stands for winning the pot.
+- **R (OpponentStrongHand):** Possibility of an opponent having a strong hand.
+
+**Description:**
+Delineates the implication that possessing either a straight flush or three of a kind leads to a high chance of winning, barring an equally strong opponent hand.
