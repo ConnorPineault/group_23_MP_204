@@ -315,19 +315,73 @@ def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
     if (hand.RP):
         return True
     
-    #hand.MP = ((not hand.SP) and (hand.HCR == 11 or hand.HCR == 12 or hand.HCR == 13 or hand.HCR == 14))
-   # if(hand.MP):
-   #     return True
-    
-    hand.RP = (not hand.SF and not hand.FL and not hand.TK and not hand.S and not hand.TP and not hand.P)
+    hand.RP = not((not hand.SF and not hand.FL and not hand.TK and not hand.S and not hand.TP and not hand.P))
     if(not hand.RP):
         return True
     
     
     
    
+"""" FUNCTION: MODEL ACCURACY TESTER
+     PARAMETER: 
+"""
+def modelAccuracyTester():
+    userCorrect = 0
+    totalGames = 0 
+    modelCorrect = 0
+    playAgain = True
+
+    print()
+    print("Calculating accuracy... Please wait a few seconds")
+
+    for int in range(100000):
+
+        # order should go as follows: 
+
+        # user sees cards. 
+        # user sees table cards
+        # play or fold function runs. 
+        # user decides 
+        # user sees dealers cards
+        # win determined
+        # result shown
+
+        totalGames += 1
+
+        deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
+        shared_cards = dealCards(deck)
+        shared_cards.pop(0) #burn first card
 
 
+
+        cards1 = dealCards(deck)    
+        hand1 = Hand(cards1,shared_cards)
+        cards2 = dealCards(deck)
+        hand2 = Hand(cards2,shared_cards)
+
+        handRanking(hand1)
+        handRanking(hand2)
+
+     
+        playOrFold(hand1)
+
+
+        determineWinner(hand1,hand2)
+
+
+
+        if ((hand1.win == True) and (hand1.RP)):
+            modelCorrect += 1
+        elif ((hand1.win == False) and (hand1.RP)):
+            pass
+        elif((hand1.win == True) and (not hand1.RP)):
+            pass
+        else:
+            modelCorrect += 1
+    
+
+    modelAccuracy = (modelCorrect / totalGames) * 100
+    print("Our models decision accuracy is", round(modelAccuracy, 2), "%, for 100,000 rounds")
 
 
 
@@ -554,14 +608,14 @@ def main():
         print()
         print("Your decision:")
         if (hand1.win == True and playDecision == "P"):
-            print("You decided to play and you won the round")
+            print("You decided to play and you won the round!")
             userCorrect += 1
         elif ((hand1.win == False) and (hand1.RP)):
-            print("You decided to play and you lost the round")
+            print("You decided to play and you lost the round!")
         elif ((hand1.win == True) and (not hand1.RP)):
-            print("You decided to fold, but you would have won the round")
+            print("You decided to fold, but you would have won the round!")
         else:
-            print("You decided to fold, and would have lost the round")
+            print("You decided to fold, and would have lost the round!")
             userCorrect += 1
 
         print()
@@ -579,7 +633,7 @@ def main():
         else:
             print("You folded so the dealer won, if you played you would have lost!")
             print("You made the right decision :(")
-            correctDecisions += 1
+            modelCorrect += 1
         
         print()
         #totalGames = correctDecisions + incorrectDecisions
@@ -587,8 +641,8 @@ def main():
         userAccuracy = userCorrect / totalGames
         modelAccuracy = modelCorrect / totalGames
 
-        print("Your accuracy is", userAccuracy, "%")
-        print("Our models accuracy is", modelAccuracy, "%")
+        print("Your decision accuracy is", round(userAccuracy, 2), "%")
+        print("Our models decision accuracy is", round(modelAccuracy, 2), "%")
         print()
         qplay = (input("Enter 'y' to play again, any other key to exit: "))
         if (qplay == 'y'):
@@ -602,7 +656,7 @@ def main():
     #print("DEALER: ", hand2.win)
 
 
-
+    modelAccuracyTester()
 
 
 
