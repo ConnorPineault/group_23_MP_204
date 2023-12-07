@@ -539,8 +539,8 @@ def main():
             print("Recommendation: Play")
 
         elif (not hand1.RP):
-         print("Recommendation: Fold")
-
+            print("Recommendation: Fold")
+        print()
 
         playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
         while ((playDecision != 'P') and (playDecision != 'F')):
@@ -588,7 +588,7 @@ def main():
         modelAccuracy = modelCorrect / totalGames
 
         print("Your accuracy is", userAccuracy, "%")
-        print("Our models accuracy is", modelAccuracy)
+        print("Our models accuracy is", modelAccuracy, "%")
         print()
         qplay = (input("Enter 'y' to play again, any other key to exit: "))
         if (qplay == 'y'):
