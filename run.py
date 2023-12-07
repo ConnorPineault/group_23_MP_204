@@ -285,7 +285,7 @@ def handRanking(hand):
     if any(HC):
         #print("high card", hand.HCR)
         hand.HC = True
-        hand.rank = ("high card of" + str(hand.HCR))
+        hand.rank = ("high card of " + str(hand.HCR))
         return True
 
     
@@ -535,82 +535,98 @@ def determineWinner(hand1, hand2):
 
 def main():
 
+    correctDecisions = 0
+    incorrectDecisions = 0 
+    playAgain = True
+
+    while(playAgain == True):
+
+        # order should go as follows: 
+
+        # user sees cards. 
+        # user sees table cards
+        # play or fold function runs. 
+        # user decides 
+        # user sees dealers cards
+        # win determined
+        # result shown
+
+        deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
+        shared_cards = dealCards(deck)
+        shared_cards.pop(0) #burn first card
 
 
 
-
-    # order should go as follows: 
-
-    # user sees cards. 
-    # user sees table cards
-    # play or fold function runs. 
-    # user decides 
-    # user sees dealers cards
-    # win determined
-    # result shown
-
-    deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
-    shared_cards = dealCards(deck)
-    shared_cards.pop(0) #burn first card
+        cards1 = dealCards(deck)    
+        hand1 = Hand(cards1,shared_cards)
+        cards2 = dealCards(deck)
+        hand2 = Hand(cards2,shared_cards)
 
 
 
-    cards1 = dealCards(deck)    
-    hand1 = Hand(cards1,shared_cards)
-    cards2 = dealCards(deck)
-    hand2 = Hand(cards2,shared_cards)
+        print("User Cards: ", cards1)
+        # playOrFold()
 
 
 
-    print("User Cards: ", cards1)
-    # playOrFold()
-
-
-
-    print("TABLE CARDS", shared_cards)
+        print("TABLE CARDS", shared_cards)
     
-    handRanking(hand1)
-    handRanking(hand2)
+        handRanking(hand1)
+        handRanking(hand2)
 
-    print("You have a:", hand1.rank)
-    playOrFold(hand1)
+        print("You have a:", hand1.rank)
+        playOrFold(hand1)
 
-    if (hand1.SP):
-        print("Recommendation: strong play")
+        if (hand1.SP):
+            print("Recommendation: strong play")
 
-    elif (hand1.MP):
-        print("Recommendation: moderate play")
+        elif (hand1.MP):
+         print("Recommendation: moderate play")
 
-    elif (hand1.WP):
-        print("Recommendation: weak play")
+        elif (hand1.WP):
+            print("Recommendation: weak play")
 
-    playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
-    while ((playDecision != 'P') and (playDecision != 'F')):
         playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
+        while ((playDecision != 'P') and (playDecision != 'F')):
+            playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
     
-    print("The dealer had: ", hand2.cards, "which results in a", hand2.rank)
-    #print("Dealer Cards: ",cards2)
-   # print("User", handRanking(hand1))
-   # handRanking(hand1)
-   # print("Dealer")
-   # handRanking(hand2)
+        print()
+        print("The dealer had: ", hand2.cards, "which results in a", hand2.rank)
 
-    determineWinner(hand1,hand2)
+        determineWinner(hand1,hand2)
 
-    if ((hand1.win == True) and (playDecision == 'P')):
-        print("The user wins the round and the dealer loses!")
-        print('You made the right decision :)')
-    elif ((hand1.win == False) and (playDecision == 'P')):
-        print("The user loses the round and the dealer wins!")
-        print("You made the wrong decision :(")
-    elif((hand1.win == True) and (playDecision == "F")):
-        print("You folded so the dealer won, if you played you would have won!")
-        print("You made the wrong decision :(")
-    else:
-        print("You folded so the dealer won, if you played you would have lost!")
-        print("You made the right decision :(")
+
+        if ((hand1.win == True) and (playDecision == 'P')):
+            print("The user wins the round and the dealer loses!")
+            print('You made the right decision :)')
+            correctDecisions += 1
+        elif ((hand1.win == False) and (playDecision == 'P')):
+            print("The user loses the round and the dealer wins!")
+            print("You made the wrong decision :(")
+            incorrectDecisions += 1
+        elif((hand1.win == True) and (playDecision == "F")):
+            print("You folded so the dealer won, if you played you would have won!")
+            print("You made the wrong decision :(")
+            incorrectDecisions += 1
+        else:
+            print("You folded so the dealer won, if you played you would have lost!")
+            print("You made the right decision :(")
+            correctDecisions += 1
         
+        print()
+        totalGames = correctDecisions + incorrectDecisions
+        print("You have played ", totalGames, "games")
+        accuracy = correctDecisions / totalGames
 
+        print("Your accuracy is", accuracy, "%")
+        print()
+        qplay = (input("Enter 'y' to play again, any other key to exit: "))
+        if (qplay == 'y'):
+            print()
+            print()
+            playAgain = True
+        else:
+            playAgain = False
 
     #print("USER: ", hand1.win)
     #print("DEALER: ", hand2.win)
