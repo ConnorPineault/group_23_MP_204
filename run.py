@@ -564,8 +564,8 @@ def main():
 
 
 
-        print("User Cards: ", cards1)
-        # playOrFold()
+    print("User Cards: ", cards1)
+    # playOrFold()
 
 
 
