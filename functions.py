@@ -5,21 +5,27 @@ from Num_Suits import NUMBERS, SUITS
 
 
 
-""" FUNCTION: DEAL CARDS
-    PARAMETER: DECK (FOUND IN MAIN)
-    RETURNS: U_HAND_SORTED (SORTED LIST OF 3 CARDS)
-    """
+""" 
+FUNCTION: DEAL CARDS
+PARAMETER: DECK (FOUND IN MAIN)
+RETURNS: U_HAND_SORTED (SORTED LIST OF 3 CARDS)
+"""
 def dealCards(deck):
 
+    # Shuffle deck to randomize the order of cards
     random.shuffle(deck)
+     # Initialize an empty set to hold the cards for user's hand
     u_hand = set()
 
+    # Keep drawing cards from the deck until we have 3 unique cards then pop it out and add to user's hand
     while len(u_hand) < 3 and deck:
         card = deck.pop()
         u_hand.add(card)
 
+    # Sort cards by number then suit
     u_hand_sorted = sorted(u_hand, key=lambda card: (card.number, card.suit)) #SORTED!!
 
+    # Returns sorted hand
     return u_hand_sorted
 
 
@@ -43,24 +49,22 @@ def example_theory():
     """
 def handRanking(hand): 
 
-    # Add a constraint that at least one of the straight conditions must be met
-    # Bauhaus encoding means that sum checks through each proposition in the list
-    # So if one proposition in list is correct it returns as true
-
+    # Assign the highest card rank (HCR) from the user's own cards to the hand.
     hand.HCR = hand.cards[2].number
 
+    # Combine the user's cards and shared cards into one list
     cards = hand.cards + hand.shared_cards
     cards.sort(key=lambda card: (card.number, card.suit))
-    #print(cards)
-
 
     
 #STRAIGHT FLUSH
+    # Check if all cards are of the same suit and in order.
     SF = [
             (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit == cards[4].suit) &
             ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1)) | 
             (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) & (cards[3].number == cards[4].number - 1) 
     ]
+    # If the condition for SF is met, set hand.SF to True and update hand.rank
     if any(SF):
        # print('straight flush')
         hand.SF = True
@@ -69,6 +73,7 @@ def handRanking(hand):
     
 
 #THREE OF A KIND
+    # Iterate over each number in NUMBERS and check if there are any three consecutive cards with that number.
     TK = [
     ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num)) |
      ((cards[1].number == num) & (cards[2].number == num) & (cards[3].number == num)) |
@@ -76,7 +81,7 @@ def handRanking(hand):
 
     for num in NUMBERS
     ]
-
+    # If the condition for TK is met, set hand.TK to True and update hand.rank
     if any(TK):
       #  print('three of a kind')
         hand.TK = True
@@ -89,7 +94,7 @@ def handRanking(hand):
     ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) &  (cards[2].number == cards[3].number - 1))|
     (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) &  (cards[3].number == cards[4].number - 1)
     ]
-
+    # If the condition for S is met, set hand.S to True and update hand.rank
     if any(S):
       #  print('straight')
         hand.S = True
@@ -100,7 +105,7 @@ def handRanking(hand):
     FL = [
     (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit)
      ]
-
+    # If the condition for FL is met, set hand.FL to True and update hand.rank
     if any(FL):
        # print('flush')
         hand.FL = True
@@ -115,7 +120,7 @@ def handRanking(hand):
     ((cards[1].number == cards[2].number) & (cards[3].number == cards[4].number)) |
     ((cards[2].number == cards[3].number) & (cards[4].number == cards[0].number))
     ]
-
+    # If the condition for TP is met, set hand.TP to True and update hand.rank
     if any(TP):
        # print('two pair')
         hand.TP = True
@@ -130,6 +135,7 @@ def handRanking(hand):
     ((cards[0].number == cards[1].number) | (cards[1].number == cards[2].number) | 
      (cards[2].number == cards[3].number) | (cards[3].number == cards[4].number))
     ]
+    # If the condition for P is met, set hand.P to True and update hand.rank
     if any(P):
        # print('pair')
         hand.P = True
@@ -140,6 +146,7 @@ def handRanking(hand):
     HC = [
         not hand.SF and not hand.TK and not hand.S and not hand.FL and not hand.TP and not hand.P
     ]
+    # If the condition for HC is met, set hand.HC to True and update hand.rank
     if any(HC):
         #print("high card", hand.HCR)
         hand.HC = True
