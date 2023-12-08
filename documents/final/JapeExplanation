@@ -8,7 +8,7 @@
 - **R (OtherPlayerHasKing):** Represents the possibility of another player having a king.
 
 **Description:**
-This sequent represents a scenario specific to Three Card Poker. It states that if a player has two kings in their hand and the other two kings are visible on the table, it is logically impossible for any other player to have a king in their hand. This reflects a more realistic and complex situation in the context of the game, adhering to the constraints of Three Card Poker while addressing the feedback for increased complexity.
+This sequent represents a scenario specific to Three Card Poker. It states that if a player has two kings in their hand and the other two kings are visible on the table, it is logically impossible for any other player to have a king in their hand.
 
 ### Sequent 2: \( E → P, G → ¬P, (F ∧ S) → P |- (E ∨ (F ∧ S)) → P \)
 

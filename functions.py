@@ -30,7 +30,7 @@ def example_theory():
 
 
 
-
+    pass
 
 
     
@@ -150,31 +150,13 @@ def handRanking(hand):
 
 
 
-""" FUNCTION: PLAY OR FOLD
-    PARAMETER: HAND (FOUND IN MAIN)
-    RETURNS: ...
-    """
-def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
-
-    hand.SP = not hand.HC
-    if (hand.SP):
-        return True
-    
-    hand.MP = ((not hand.SP) and (hand.HCR == 11 or hand.HCR == 12 or hand.HCR == 13 or hand.HCR == 14))
-    if(hand.MP):
-        return True
-    
-    hand.WP = (not hand.SP and not hand.MP)
-    if(hand.WP):
-        return True
-    
-
 
 """ FUNCTION: DETERMINE WINNER
     PARAMETER: HAND1, HAND2 (FOUND IN MAIN)
     RETURNS: TRUE (FOR WINNING RANK)
     """   
 def determineWinner(hand1, hand2):
+    
 
     #HCC (High card comparator) will evaluate to true for the hand with the better high card
     cards1 = hand1.cards
@@ -302,9 +284,257 @@ def determineWinner(hand1, hand2):
     if (hand1.win == False):
         hand2.win = True
         return True
+""" FUNCTION: PLAY OR FOLD 3
+    PARAMETER: HAND (FOUND IN MAIN)
+    RETURNS: ...
+    """
+def playOrFold3(hand, shared_cards): ##PLAY OR FOLD RECOMMENDATIONS
+
+    hc5OrHigher = (hand.HCR == 14 or hand.HCR == 13 or hand.HCR == 12 or hand.HCR == 11 or hand.HCR == 10 or hand.HCR == 9 or hand.HCR == 8 or hand.HCR == 7 or hand.HCR == 6 or hand.HCR == 5)
+    sharedDangerTK = shared_cards[0].number == shared_cards[1].number and not hand.TK
+    sharedDangerS = (shared_cards[0].number == shared_cards[1].number + 1) and not hand.S             
+    sharedDangerFL = (shared_cards[0].suit == shared_cards[1].suit) and not hand.FL
+
+    hand.RP = (not hand.HC) and (hc5OrHigher) and (not sharedDangerTK or not hand.P) and (not sharedDangerS or not hand.P) and (not sharedDangerFL or not hand.P)
+
+    if (hand.RP):
+        return True
+    else:
+        hand.RP = False
+        return True
+""" FUNCTION: PLAY OR FOLD 2
+    PARAMETER: HAND (FOUND IN MAIN)
+    RETURNS: ...
+    """
+def playOrFold2(hand): ##PLAY OR FOLD RECOMMENDATIONS
+
+    hand.RP = ((not hand.HC) and (hand.HCR == 14 or hand.HCR == 13
+                or hand.HCR == 12 or hand.HCR == 11 or hand.HCR == 10
+                or hand.HCR == 9 or hand.HCR == 8 or hand.HCR == 7
+                or hand.HCR == 6 or hand.HCR == 5))
+   
+    if (hand.RP):
+        return True
+    else:
+        hand.RP = False
+        return True
+""" FUNCTION: PLAY OR FOLD 1
+    PARAMETER: HAND (FOUND IN MAIN)
+    RETURNS: ...
+    """
+def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
+
+    hand.RP = not hand.HC
+    if (hand.RP):
+        return True
+    
+    hand.RP = not((not hand.SF and not hand.FL and not hand.TK and not hand.S and not hand.TP and not hand.P))
+    if(not hand.RP):
+        return True
+
+def modelAccuracyTester(modelChoice):
+
+
+    userCorrect = 0
+    totalGames = 0 
+    modelCorrect = 0
+    playAgain = True
+
+    print()
+    print("Calculating accuracy... Please wait a few seconds")
+
+    for int in range(100000):
+
+
+
+        totalGames += 1
+
+        deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
+        shared_cards = dealCards(deck)
+        shared_cards.pop(0) #burn first card
+
+
+
+        cards1 = dealCards(deck)    
+        hand1 = Hand(cards1,shared_cards)
+        cards2 = dealCards(deck)
+        hand2 = Hand(cards2,shared_cards)
+
+        handRanking(hand1)
+        handRanking(hand2)
+
+     
+        if (modelChoice == 1):
+            playOrFold(hand1)
+        elif (modelChoice == 2):
+            playOrFold2(hand1)
+        else:
+            playOrFold3(hand1, shared_cards)
+
+        determineWinner(hand1,hand2)
+
+
+        if ((hand1.win == True) and (hand1.RP)):
+            modelCorrect += 1
+        elif ((hand1.win == False) and (hand1.RP)):
+            pass
+        elif((hand1.win == True) and (not hand1.RP)):
+            pass
+        else:
+            modelCorrect += 1
     
 
+    modelAccuracy = (modelCorrect / totalGames) * 100
+    print("Our models decision accuracy is", round(modelAccuracy, 2), "%, for 100,000 rounds")
 
+def home():
+    
+
+        userCorrect = 0
+        totalGames = 0 
+        modelCorrect = 0
+        playAgain = True
+        modelTest = False
+        print()
+        print()
+        print("(1) Hand by Hand")
+        print("(2) Model Runs 100,000 game instances.")
+        print()
+        print('-Reccomended to explore model with enlarged terminal for best expierence-')
+        print()
+
+        print("Select: 1 or 2: ")
+        answer = int(input(": "))
+
+        if answer == 1:
+            playAgain = True
+        else:
+            playAgain = False
+            modelTest = True
+
+
+
+
+        while(playAgain == True):
+
+
+        
+
+
+            totalGames += 1
+
+            deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
+            shared_cards = dealCards(deck)
+            shared_cards.pop(0) #burn first card
+
+
+
+            cards1 = dealCards(deck)    
+            hand1 = Hand(cards1,shared_cards)
+            cards2 = dealCards(deck)
+            hand2 = Hand(cards2,shared_cards)
+
+
+
+
+
+
+            print("User Cards: ", cards1)
+
+
+
+
+            print("TABLE CARDS", shared_cards)
+        
+            handRanking(hand1)
+            handRanking(hand2)
+            
+
+            print("You have a:", hand1.rank)
+            playOrFold(hand1)
+
+            if (hand1.RP):
+                print("Recommendation: Play")
+
+            elif (not hand1.RP):
+                print("Recommendation: Fold")
+            print()
+
+            playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
+            while ((playDecision != 'P') and (playDecision != 'F')):
+                playDecision = input("Enter 'P' to play, 'F' to fold: ").upper()
+        
+            print()
+            print("The dealer had: ", hand2.cards, "which results in a", hand2.rank)
+
+            determineWinner(hand1,hand2)
+
+            print()
+            print("Your decision:")
+            if (hand1.win == True and playDecision == "P"):
+                print("You decided to play and you won the round!")
+                userCorrect += 1
+            elif ((hand1.win == False) and (hand1.RP)):
+                print("You decided to play and you lost the round!")
+            elif ((hand1.win == True) and (not hand1.RP)):
+                print("You decided to fold, but you would have won the round!")
+            else:
+                print("You decided to fold, and would have lost the round!")
+                userCorrect += 1
+
+            print()
+            print("Our model:")
+            if ((hand1.win == True) and (hand1.RP)):
+                print("We recommended to play, the user would have won!")
+                print('Our model made the right decision :)')
+                modelCorrect += 1
+            elif ((hand1.win == False) and (hand1.RP)):
+                print("We recommended to play, the user would have lost!")
+                print("Our model made the wrong decision :(")
+            elif((hand1.win == True) and (not hand1.RP)):
+                print("We recommended to fold, but your hand would have won.")
+                print("Our model made the wrong decision :(")
+            else:
+                print("You folded so the dealer won, if you played you would have lost!")
+                print("You made the right decision :)")
+                modelCorrect += 1
+            
+            print()
+            print("You have played", totalGames, "games")
+            userAccuracy = userCorrect / totalGames
+            modelAccuracy = modelCorrect / totalGames
+
+            print("Your decision accuracy is", round(userAccuracy, 2), "%")
+            print("Our models decision accuracy is", round(modelAccuracy, 2), "%")
+            print()
+            qplay = (input("Enter 'y' to play again, any other key to go home: ")).upper()
+            if (qplay != 'Y'):
+                print()
+                print()
+                playAgain = False
+                home()
+            else:
+                playAgain = True
+
+
+
+        
+        while (modelTest == True):
+            print("1: is the pair + model")
+            print("2: is the pair + with high card 5 + model")
+            print("3: is the pair plus + high card 5 + (avoids dangerous shared cards) model")
+            modelNum = 0 
+            while (modelNum != 1 and modelNum != 2 and modelNum != 3):
+                modelNum = int(input("Enter model: (1|2|3): "))
+    
+            modelAccuracyTester(modelNum)
+
+            testAgain = input("Enter 'y' to test again, any other key to exit: ").upper()
+            if (testAgain != "Y"):
+                modelTest = False
+                home()
+            else:
+                modelTest = True
 
 
 

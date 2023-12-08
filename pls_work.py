@@ -168,7 +168,7 @@ def example_theory():
 
 
 
-    @constraint.implies(E, SF)
+    @constraint.add_implies_all(E, SF)
     def straight_flush_constraint(hand):
         cards = hand.cards + hand.shared_cards
         cards.sort(key=lambda card: (card.number, card.suit))
@@ -177,7 +177,7 @@ def example_theory():
             ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1)) |
             (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) & (cards[3].number == cards[4].number - 1)
         )
-    @constraint.implies(E, TK)
+    @constraint.add_implies_all(E, TK)
     def three_of_a_kind_constraint(hand):
         cards = hand.cards + hand.shared_cards
         cards.sort(key=lambda card: (card.number, card.suit))
@@ -186,7 +186,7 @@ def example_theory():
             ((cards[1].number == num) & (cards[2].number == num) & (cards[3].number == num)) |
             ((cards[2].number == num) & (cards[3].number == num) & (cards[4].number == num)) 
         )
-    @constraint.implies(E, S)
+    @constraint.add_implies_all(E, S)
     def straight_constraint(hand):
         cards = hand.cards + hand.shared_cards
         cards.sort(key=lambda card: (card.number, card.suit))
@@ -194,7 +194,7 @@ def example_theory():
         ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) &  (cards[2].number == cards[3].number - 1))|
         (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) &  (cards[3].number == cards[4].number - 1) 
         )
-    @constraint.implies(E, FL)
+    @constraint.add_implies_all(E, FL)
     def flush_constraint(hand):
         cards = hand.cards + hand.shared_cards
         cards.sort(key=lambda card: (card.number, card.suit))
@@ -202,7 +202,7 @@ def example_theory():
            
         (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit)
         )
-    @constraint.implies(E, TP)
+    @constraint.add_implies_all(E, TP)
     def two_pair_constraint(hand):
         cards = hand.cards + hand.shared_cards
         cards.sort(key=lambda card: (card.number, card.suit))
@@ -214,7 +214,7 @@ def example_theory():
         ((cards[2].number == cards[3].number) & (cards[4].number == cards[0].number))
 
         )
-    @constraint.implies(E, P)
+    @constraint.add_implies_all(E, P)
     def pair_constraint(hand):
         cards = hand.cards + hand.shared_cards
         cards.sort(key=lambda card: (card.number, card.suit))
@@ -222,7 +222,7 @@ def example_theory():
         ((cards[0].number == cards[1].number) | (cards[1].number == cards[2].number) | 
         (cards[2].number == cards[3].number) | (cards[3].number == cards[4].number))
         )
-    @constraint.implies(E, HC)
+    @constraint.add_implies_all(E, HC)
     def high_card_constraint(hand):
         cards = hand.cards + hand.shared_cards
         cards.sort(key=lambda card: (card.number, card.suit))
@@ -240,6 +240,7 @@ def example_theory():
 
 
     def handRanking2(hand):
+     
         E.reset()  
 
         cards = hand.cards + hand.shared_cards
@@ -269,10 +270,25 @@ def example_theory():
             hand.S = True
             hand.rank = "Straight"
             return True
+        elif FL in solution:
+            hand.SF = True
+            hand.rank = "Flush"
+            return True
+        elif TP in solution:
+            hand.TK = True
+            hand.rank = "Two-Pair"
+            return True
+        elif P in solution:
+            hand.S = True
+            hand.rank = "Pair"
+            return True
+        elif HC in solution:
+            hand.S = True
+            hand.rank = "High-Card"
+            return True
  
 
-        return False  #
-
+        return False  
 
 
     handRanking2()
@@ -430,6 +446,7 @@ def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
 """" FUNCTION: MODEL ACCURACY TESTER
      PARAMETER: 
 """
+"""
 def modelAccuracyTester():
     userCorrect = 0
     totalGames = 0 
@@ -488,7 +505,7 @@ def modelAccuracyTester():
     modelAccuracy = (modelCorrect / totalGames) * 100
     print("Our models decision accuracy is", round(modelAccuracy, 2), "%, for 100,000 rounds")
 
-
+    """
 
 
 
@@ -503,9 +520,6 @@ def modelAccuracyTester():
     PARAMETER: HAND1, HAND2 (FOUND IN MAIN)
     RETURNS: TRUE (FOR WINNING RANK)
     """   
-
-
-
 def determineWinner(hand1, hand2):
 
     #HCC (High card comparator) will evaluate to true for the hand with the better high card
