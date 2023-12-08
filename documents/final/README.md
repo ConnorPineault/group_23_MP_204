@@ -1,5 +1,46 @@
 # Modelling Project Final Submission
 
+Group 23's Modelling Project.
+
+Brief Explaination: 
+
+1 - This project models a slightly simplified version of standard poker. 
+2 - This version includes 3 given (dealt) cards, and 2 cards that act as shared table cards (the river).
+3 - The model determines the rank of each players hand, and uses the ranks to determine the winner.
+4 - The model provides suggestions to the player on if the player should play, or fold the hand.
+5 - The model also features a model accuracy function, which can determine the accuracy of the models predications over large sample sizes.
+
+A more in depth description, break down, and analysis of the model can be found in the project report:
+
+                                    GROUP_23_MP_204 > final > project_report
+
+To explore the model, run the program through the run.py file:
+
+                                    GROUP_23_MP_204 > run.py
+
+Related Jape proofs both solved and explained can be found at:
+
+                                    GROUP_23_MP_204 > final > JapeExplanation OR proofs.jp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 This folder should contain the extra documents for the deliverables (D3) - (D5)
 
 ## Expected Items
