@@ -12,7 +12,7 @@ Brief Explaination:
 
 A more in depth description, break down, and analysis of the model can be found in the project report:
 
-                                    GROUP_23_MP_204 > final > project_report
+                                    GROUP_23_MP_204 > final > CISC 204_Modelling Report Final.docx
 
 To explore the model, run the program through the run.py file:
 
