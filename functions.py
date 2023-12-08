@@ -210,27 +210,52 @@ def handRanking(hand):
         hand.rank = "Three of a kind"
         return True
 
-
-#Straight | with 4 in a row | subject to change
-    # Checks for two possible scenarios where four consecutive cards form a Straight
-    S = [
-    ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) &  (cards[2].number == cards[3].number - 1))|
-    (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) &  (cards[3].number == cards[4].number - 1)
+#STRAIGHT FLUSH
+    SF = [
+            (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit == cards[4].suit) &
+            ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) 
+            & (cards[3].number == cards[4].number - 1)) 
     ]
-    # If the condition for S is met, set hand.S to True and update hand.rank
+    if any(SF):
+       # print('straight flush')
+        hand.SF = True
+        hand.rank = ("Straight flush")
+        return True
+    
+
+#THREE OF A KIND
+    TK = [
+    ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num)) |
+     ((cards[1].number == num) & (cards[2].number == num) & (cards[3].number == num)) |
+      ((cards[2].number == num) & (cards[3].number == num) & (cards[4].number == num)) 
+
+    for num in NUMBERS
+    ]
+
+    if any(TK):
+      #  print('three of a kind')
+        hand.TK = True
+        hand.rank = "Three of a kind"
+        return True
+
+
+#Straight | 5 in a row 
+    S = [
+    ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) &  (cards[2].number == cards[3].number - 1)
+    & (cards[3].number == cards[4].number - 1))
+    ]
+
     if any(S):
       #  print('straight')
         hand.S = True
         hand.rank = "Straight"
         return True
 
-
 #FLUSH
-    # Checks if the first four cards have the same suit
     FL = [
-    (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit)
+    (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit == cards[4].suit)
      ]
-    # If the condition for FL is met, set hand.FL to True and update hand.rank
+
     if any(FL):
        # print('flush')
         hand.FL = True
