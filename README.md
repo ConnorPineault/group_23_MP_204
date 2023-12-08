@@ -1,5 +1,18 @@
 # CISC/CMPE 204 Modelling Project
 
+Final:
+Welcome to our project for CISC/CMPE 204, a 3-card Poker game.
+To run our game, you simply need to run the run.py file. Once you run run.py you will get a chance to play the game and see our model.
+Classes.py is simply classes for Card and Hand.
+functions.py are the functions we use in run.py
+Num_Suits.py defines the suits and ranks in a deck of cards
+run.py runs the game and model
+test.py is just testing for the game
+
+Under documents and final you will find this and the Jape explanations along with the jape proofs and the modelling_report.docx
+
+
+Draft:
 Hi! 
 Our draft report can be found as a google doc link in the report.txt file
 
