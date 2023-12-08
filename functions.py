@@ -4,7 +4,6 @@ from Num_Suits import NUMBERS, SUITS
 
 
 
-
 """ 
 FUNCTION: DEAL CARDS
 PARAMETER: DECK (FOUND IN MAIN)
@@ -30,16 +29,12 @@ def dealCards(deck):
 
 
 
-
 def example_theory():
 
 
 
 
     pass
-
-
-    
 
 
 
@@ -49,7 +44,7 @@ def example_theory():
     """
 def handRanking(hand): 
 
-    # Assign the highest card rank (HCR) from the user's own cards to the hand.
+    # Assign the highest card rank (HCR) from the user's own cards to the hand
     hand.HCR = hand.cards[2].number
 
     # Combine the user's cards and shared cards into one list
@@ -58,7 +53,7 @@ def handRanking(hand):
 
     
 #STRAIGHT FLUSH
-    # Check if all cards are of the same suit and in order.
+    # Check if all cards are of the same suit and in order
     SF = [
             (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit == cards[4].suit) &
             ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1)) | 
@@ -73,7 +68,7 @@ def handRanking(hand):
     
 
 #THREE OF A KIND
-    # Iterate over each number in NUMBERS and check if there are any three consecutive cards with that number.
+    # Iterate over each number in NUMBERS and check if there are any three consecutive cards with that number
     TK = [
     ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num)) |
      ((cards[1].number == num) & (cards[2].number == num) & (cards[3].number == num)) |
@@ -90,6 +85,7 @@ def handRanking(hand):
 
 
 #Straight | with 4 in a row | subject to change
+    # Checks for two possible scenarios where four consecutive cards form a Straight
     S = [
     ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) &  (cards[2].number == cards[3].number - 1))|
     (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) &  (cards[3].number == cards[4].number - 1)
@@ -101,7 +97,9 @@ def handRanking(hand):
         hand.rank = "Straight"
         return True
 
+
 #FLUSH
+    # Checks if the first four cards have the same suit
     FL = [
     (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit)
      ]
@@ -114,6 +112,7 @@ def handRanking(hand):
 
 
 # Two - Pair
+    # Checks for different combinations of two pairs in  5 cards:
     TP = [
     ((cards[0].number == cards[1].number) & (cards[2].number == cards[3].number)) |
     ((cards[0].number == cards[1].number) & (cards[3].number == cards[4].number)) |
@@ -128,9 +127,8 @@ def handRanking(hand):
         return True
 
 
-
-
-#Pair       
+#Pair
+    # Check for a pair in the hand
     P = [
     ((cards[0].number == cards[1].number) | (cards[1].number == cards[2].number) | 
      (cards[2].number == cards[3].number) | (cards[3].number == cards[4].number))
@@ -142,6 +140,7 @@ def handRanking(hand):
         hand.rank = "Pair"
         return True
     
+
 #High card
     HC = [
         not hand.SF and not hand.TK and not hand.S and not hand.FL and not hand.TP and not hand.P
@@ -155,16 +154,12 @@ def handRanking(hand):
 
     
 
-
-
-
 """ FUNCTION: DETERMINE WINNER
     PARAMETER: HAND1, HAND2 (FOUND IN MAIN)
     RETURNS: TRUE (FOR WINNING RANK)
     """   
 def determineWinner(hand1, hand2):
     
-
     #HCC (High card comparator) will evaluate to true for the hand with the better high card
     cards1 = hand1.cards
     cards2 = hand2.cards
@@ -173,9 +168,7 @@ def determineWinner(hand1, hand2):
         hand1.HCC = True
     else:       
         hand2.HCC = True
-        
-
-    
+ 
     #USER HAS A STRAIGHT FLUSH, DEALER DOES NOT
     win = (hand1.SF and not hand2.SF)
     if (win):
@@ -187,9 +180,6 @@ def determineWinner(hand1, hand2):
     if (win):
         hand1.win = True
         return True
-        
-    
-    #hand1.win = hand1.SF and not hand2.SF  
    
     #USER HAS THREE OF A KIND
     win = (hand1.TK and not hand2.SF and not hand2.TK)
@@ -202,8 +192,6 @@ def determineWinner(hand1, hand2):
     if (win):
         hand1.win = True
         return True
-  
-
 
     #USER HAS A STRAIGHT
     win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S)
@@ -217,8 +205,6 @@ def determineWinner(hand1, hand2):
         hand1.win = True
         return True
 
-
-
     #USER HAS FLUSH
     win = (hand1.FL and not hand2.SF and not hand2.TK)
     if (win):
@@ -231,20 +217,17 @@ def determineWinner(hand1, hand2):
         hand1.win = True
         return True
     
-
     #USER HAS 2-PAIR    
     win = (hand1.TP and not hand2.SF and not hand2.TK and not hand2.S and not hand2.FL and not hand2.TP)
     if (win):
         hand1.win = True
         return True
-    #hand1.win = (hand1.S and not hand2.SF and not hand2.TK and not hand2.S) 
 
     #BOTH PLAYERS HAVE A 2 PAIR
     win = (hand1.TP and hand2.TP and hand1.HCC)
     if (win):
         hand1.win = True
         return True
-   
 
     #USER HAS A PAIR
     win = (hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
@@ -269,78 +252,93 @@ def determineWinner(hand1, hand2):
     if (win):
         hand1.win = False
 
-
-    #HC = (not hand1.P and not hand2.SF and not hand2.TK and not hand2.S and not hand2.P and not hand2.FL and not hand2.TP)
-    #if (HC):
-    #    hand1.HC = True #setting hand HC to true 
-    #    cards1 = hand1.cards
-    #    cards2 = hand2.cards
-    #    hc1 = cards1[2]
-    #    hc2 = cards2[2]
-    #    print(hc1)
-    #    print(hc2)
-    #    if (hand1.cards[2].number > hand2.cards[2].number):
-    #            hand1.win = True
-    #            return True
-    #    else:
-    #           hand2.win = True
-    #            return True
-
-
     #If the first player does not win, then this implies that the second player wins
     if (hand1.win == False):
         hand2.win = True
         return True
+    
+
+
 """ FUNCTION: PLAY OR FOLD 3
     PARAMETER: HAND (FOUND IN MAIN)
     RETURNS: ...
     """
 def playOrFold3(hand, shared_cards): ##PLAY OR FOLD RECOMMENDATIONS
 
+    # Check if the hand's highest card rank (HCR) is 5 or higher
     hc5OrHigher = (hand.HCR == 14 or hand.HCR == 13 or hand.HCR == 12 or hand.HCR == 11 or hand.HCR == 10 or hand.HCR == 9 or hand.HCR == 8 or hand.HCR == 7 or hand.HCR == 6 or hand.HCR == 5)
+    
+     # Identify potential danger from a three-of-a-kind in shared cards, if hand does not have a three-of-a-kind
     sharedDangerTK = shared_cards[0].number == shared_cards[1].number and not hand.TK
-    sharedDangerS = (shared_cards[0].number == shared_cards[1].number + 1) and not hand.S             
+
+    # Identify potential danger from a straight in shared cards, if hand does not have a straight
+    sharedDangerS = (shared_cards[0].number == shared_cards[1].number + 1) and not hand.S
+
+    # Identify potential danger from a flush in shared cards, if hand does not have a flush             
     sharedDangerFL = (shared_cards[0].suit == shared_cards[1].suit) and not hand.FL
 
+    # Set hand.RP based on following conditions
+    # If there is no high card and high card rank is 5 or higher, and no danger from shared cards unless the hand has a pair
     hand.RP = (not hand.HC) and (hc5OrHigher) and (not sharedDangerTK or not hand.P) and (not sharedDangerS or not hand.P) and (not sharedDangerFL or not hand.P)
 
     if (hand.RP):
+        # Recommends to play if the conditions are met
         return True
     else:
         hand.RP = False
+        # Recommends not playing if conditions are not met
         return True
+    
+
+
 """ FUNCTION: PLAY OR FOLD 2
     PARAMETER: HAND (FOUND IN MAIN)
     RETURNS: ...
     """
 def playOrFold2(hand): ##PLAY OR FOLD RECOMMENDATIONS
 
+    # Set hand.RP based on following conditions
+    # If there is no high card (HC) and the high card rank (HCR) is 5 or higher.
     hand.RP = ((not hand.HC) and (hand.HCR == 14 or hand.HCR == 13
                 or hand.HCR == 12 or hand.HCR == 11 or hand.HCR == 10
                 or hand.HCR == 9 or hand.HCR == 8 or hand.HCR == 7
                 or hand.HCR == 6 or hand.HCR == 5))
    
     if (hand.RP):
+        # Recommends to play if the conditions are met
         return True
     else:
         hand.RP = False
+        # Recommends not playing if conditions are not met
         return True
+    
+
+
 """ FUNCTION: PLAY OR FOLD 1
     PARAMETER: HAND (FOUND IN MAIN)
     RETURNS: ...
     """
 def playOrFold(hand): ##PLAY OR FOLD RECOMMENDATIONS
 
+    # Recommends to play if there is no high card (HC), (Sets hand.RP to True)
     hand.RP = not hand.HC
     if (hand.RP):
         return True
     
+    # Recommends to play unless the hand lacks all SF, FL, TK, S, TP, P
     hand.RP = not((not hand.SF and not hand.FL and not hand.TK and not hand.S and not hand.TP and not hand.P))
+    
+    # If hand.RP is False (meaning all special hands are absent), recommend not playing
     if(not hand.RP):
         return True
 
+""" FUNCTION: Model Accuracy Tester
+    PARAMETER: modelChoice (FOUND IN MAIN)
+    RETURNS: None
+"""
 def modelAccuracyTester(modelChoice):
 
+    # Initialize counters for user correctness, total games, and model correctness
 
     userCorrect = 0
     totalGames = 0 
@@ -350,27 +348,28 @@ def modelAccuracyTester(modelChoice):
     print()
     print("Calculating accuracy... Please wait a few seconds")
 
+     # Loop to simulate 100,000 games
     for int in range(100000):
 
-
-
+        # Increment total games counter
         totalGames += 1
 
+        # Create a new deck of cards and deal shared cards
         deck = [Card(num,suit) for num in NUMBERS for suit in SUITS]
         shared_cards = dealCards(deck)
-        shared_cards.pop(0) #burn first card
+        shared_cards.pop(0) # Burn first card
 
-
-
+        # Deal cards to two players and create hand objects
         cards1 = dealCards(deck)    
         hand1 = Hand(cards1,shared_cards)
         cards2 = dealCards(deck)
         hand2 = Hand(cards2,shared_cards)
 
+        # Determine the ranking of each hand
         handRanking(hand1)
         handRanking(hand2)
 
-     
+        # Choose a play or fold model based on the modelChoice parameter
         if (modelChoice == 1):
             playOrFold(hand1)
         elif (modelChoice == 2):
@@ -378,9 +377,10 @@ def modelAccuracyTester(modelChoice):
         else:
             playOrFold3(hand1, shared_cards)
 
+        # Determine winner of the game
         determineWinner(hand1,hand2)
 
-
+        # Increment model correctness based on the outcome and model recommendation
         if ((hand1.win == True) and (hand1.RP)):
             modelCorrect += 1
         elif ((hand1.win == False) and (hand1.RP)):
@@ -390,13 +390,14 @@ def modelAccuracyTester(modelChoice):
         else:
             modelCorrect += 1
     
-
+     # Calculate and print the model's accuracy
     modelAccuracy = (modelCorrect / totalGames) * 100
     print("Our models decision accuracy is", round(modelAccuracy, 2), "%, for 100,000 rounds")
 
+
+
 def home():
     
-
         userCorrect = 0
         totalGames = 0 
         modelCorrect = 0
@@ -542,10 +543,3 @@ def home():
                 home()
             else:
                 modelTest = True
-
-
-
-
-
-
-
