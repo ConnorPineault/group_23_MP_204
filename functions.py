@@ -34,7 +34,134 @@ def example_theory():
 
 
 
-    pass
+  
+
+
+
+
+    @constraint.add_implies_all(E, SF)
+    def straight_flush_constraint(hand):
+        cards = hand.cards + hand.shared_cards
+        cards.sort(key=lambda card: (card.number, card.suit))
+        return (
+            (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit == cards[4].suit) and
+            ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1)) |
+            (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) & (cards[3].number == cards[4].number - 1)
+        )
+    @constraint.add_implies_all(E, TK)
+    def three_of_a_kind_constraint(hand):
+        cards = hand.cards + hand.shared_cards
+        cards.sort(key=lambda card: (card.number, card.suit))
+        return (   
+            ((cards[0].number == num) & (cards[1].number == num) & (cards[2].number == num)) |
+            ((cards[1].number == num) & (cards[2].number == num) & (cards[3].number == num)) |
+            ((cards[2].number == num) & (cards[3].number == num) & (cards[4].number == num)) 
+        )
+    @constraint.add_implies_all(E, S)
+    def straight_constraint(hand):
+        cards = hand.cards + hand.shared_cards
+        cards.sort(key=lambda card: (card.number, card.suit))
+        return (   
+        ((cards[0].number == cards[1].number - 1) & (cards[1].number == cards[2].number - 1) &  (cards[2].number == cards[3].number - 1))|
+        (cards[1].number == cards[2].number - 1) & (cards[2].number == cards[3].number - 1) &  (cards[3].number == cards[4].number - 1) 
+        )
+    @constraint.add_implies_all(E, FL)
+    def flush_constraint(hand):
+        cards = hand.cards + hand.shared_cards
+        cards.sort(key=lambda card: (card.number, card.suit))
+        return (
+           
+        (cards[0].suit == cards[1].suit == cards[2].suit == cards[3].suit)
+        )
+    @constraint.add_implies_all(E, TP)
+    def two_pair_constraint(hand):
+        cards = hand.cards + hand.shared_cards
+        cards.sort(key=lambda card: (card.number, card.suit))
+        return (
+           
+        ((cards[0].number == cards[1].number) & (cards[2].number == cards[3].number)) |
+        ((cards[0].number == cards[1].number) & (cards[3].number == cards[4].number)) |
+        ((cards[1].number == cards[2].number) & (cards[3].number == cards[4].number)) |
+        ((cards[2].number == cards[3].number) & (cards[4].number == cards[0].number))
+
+        )
+    @constraint.add_implies_all(E, P)
+    def pair_constraint(hand):
+        cards = hand.cards + hand.shared_cards
+        cards.sort(key=lambda card: (card.number, card.suit))
+        return (  
+        ((cards[0].number == cards[1].number) | (cards[1].number == cards[2].number) | 
+        (cards[2].number == cards[3].number) | (cards[3].number == cards[4].number))
+        )
+    @constraint.add_implies_all(E, HC)
+    def high_card_constraint(hand):
+        cards = hand.cards + hand.shared_cards
+        cards.sort(key=lambda card: (card.number, card.suit))
+        return (
+           
+        (not hand.SF and not hand.TK and not hand.S and not hand.FL and not hand.TP and not hand.P)
+
+        )
+
+
+
+
+
+
+
+    def handRanking2(hand):
+     
+        E.reset()  
+
+        cards = hand.cards + hand.shared_cards
+        cards.sort(key=lambda card: (card.number, card.suit))
+
+
+        straight_flush_constraint(E, hand)
+        three_of_a_kind_constraint(E, hand)
+        straight_constraint(E, hand)
+        flush_constraint(E, hand)
+        two_pair_constraint(E, hand)
+        pair_constraint(E, hand)
+        high_card_constraint(E, hand)
+
+ 
+        solution = solve(E)
+
+        if SF in solution:
+            hand.SF = True
+            hand.rank = "Straight flush"
+            return True
+        elif TK in solution:
+            hand.TK = True
+            hand.rank = "Three of a kind"
+            return True
+        elif S in solution:
+            hand.S = True
+            hand.rank = "Straight"
+            return True
+        elif FL in solution:
+            hand.SF = True
+            hand.rank = "Flush"
+            return True
+        elif TP in solution:
+            hand.TK = True
+            hand.rank = "Two-Pair"
+            return True
+        elif P in solution:
+            hand.S = True
+            hand.rank = "Pair"
+            return True
+        elif HC in solution:
+            hand.S = True
+            hand.rank = "High-Card"
+            return True
+ 
+
+        return False  
+
+
+    handRanking2()
 
 
 
@@ -251,6 +378,10 @@ def determineWinner(hand1, hand2):
     win = (hand1.HC and hand2.HC and not hand1.HCC)
     if (win):
         hand1.win = False
+
+
+   
+
 
     #If the first player does not win, then this implies that the second player wins
     if (hand1.win == False):

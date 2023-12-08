@@ -13,23 +13,7 @@ Under documents and final you will find this and the Jape explanations along wit
 
 
 Draft:
-Hi! 
-Our draft report can be found as a google doc link in the report.txt file
-
-documents/draft/report.txt 
-
-Jape proofs and descriptions can be found as a jape file, aswell as a readme in the draft folder.
-
-Jape File:
-documents/draft/proofs.jp
-
-Jape proof and sequents Description: 
-documents/draft/JapeExplanation.md
-
-Powerpoint:
-modelling_report.pptx
-
-
+UPDATE README SOON
 
 
 
