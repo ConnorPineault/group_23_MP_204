@@ -1,19 +1,29 @@
 # CISC/CMPE 204 Modelling Project
 
-Final:
-Welcome to our project for CISC/CMPE 204, a 3-card Poker game.
-To run our game, you simply need to run the run.py file. Once you run run.py you will get a chance to play the game and see our model.
-Classes.py is simply classes for Card and Hand.
-functions.py are the functions we use in run.py
-Num_Suits.py defines the suits and ranks in a deck of cards
-run.py runs the game and model
-test.py is just testing for the game
+Group 23's Modelling Project.
 
-Under documents and final you will find this and the Jape explanations along with the jape proofs and the modelling_report.docx
+Brief Explaination: 
+
+1 - This project models a slightly simplified version of standard poker. 
+2 - This version includes 3 given (dealt) cards, and 2 cards that act as shared table cards (the river).
+3 - The model determines the rank of each players hand, and uses the ranks to determine the winner.
+4 - The model provides suggestions to the player on if the player should play, or fold the hand.
+5 - The model also features a model accuracy function, which can determine the accuracy of the models predications over large sample sizes.
+
+A more in depth description, break down, and analysis of the model can be found in the project report. 
+
+                                    GROUP_23_MP_204 > final > project_report
+
+To explore the model, run the program through the run.py file.
+
+                                    GROUP_23_MP_204 > run.py
+
+Related Jape proofs both solved and explained can be found at
+
+                                    GROUP_23_MP_204 > final > JapeExplanation OR proofs.jp
 
 
-Draft:
-UPDATE README SOON
+
 
 
 
